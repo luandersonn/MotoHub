@@ -21,7 +21,7 @@ public class MotorcycleRepository(AppDbContext context) : RepositoryBase<Motorcy
             .FirstOrDefaultAsync(m => m.Plate == plate, cancellationToken);
     }
 
-    public async Task<List<Motorcycle>> SearchAsync(MotorcycleSearchParametersDTO queryParameters, CancellationToken cancellationToken = default)
+    public async Task<List<Motorcycle>> SearchAsync(MotorcycleSearchParametersDto queryParameters, CancellationToken cancellationToken = default)
     {
         IQueryable<Motorcycle> query = _dbSet.AsNoTracking();
 

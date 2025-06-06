@@ -1,6 +1,6 @@
 ﻿namespace MotoHub.Application.DTOs;
 
-public class MotorcycleSearchParametersDTO
+public class MotorcycleSearchParametersDto
 {
     public string? Identifier { get; set; }
     public string? Model { get; set; }

@@ -22,12 +22,17 @@ public class ApiControllerBase : ControllerBase
 
     protected virtual IActionResult HandleError(Result result)
     {
+        var resultObject = new
+        {
+            mensagem = result.Error
+        };
+
         return result.ErrorType switch
         {
-            ResultErrorType.NotFound => NotFound(result.Error),
-            ResultErrorType.ValidationError => BadRequest(result.Error),
-            ResultErrorType.Unauthorized => Unauthorized(result.Error),
-            _ => StatusCode(StatusCodes.Status500InternalServerError, result.Error)
+            ResultErrorType.NotFound => NotFound(resultObject),
+            ResultErrorType.ValidationError => BadRequest(resultObject),
+            ResultErrorType.Unauthorized => Unauthorized(resultObject),
+            _ => StatusCode(StatusCodes.Status500InternalServerError, resultObject)
         };
     }
 }

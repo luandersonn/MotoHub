@@ -15,6 +15,7 @@ public static class ApplicationExtensions
     private static IServiceCollection AddUseCases(this IServiceCollection services)
     {
         services.AddScoped<ISearchMotorcyclesUseCase, SearchMotorcyclesUseCase>();
+        services.AddScoped<IRegisterMotorcycleUseCase, RegisterMotorcycleUseCase>();
 
         return services;
     }
