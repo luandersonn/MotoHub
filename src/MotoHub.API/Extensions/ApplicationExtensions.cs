@@ -25,6 +25,7 @@ public static class ApplicationExtensions
 
         // Courier
         services.AddScoped<IRegisterCourierUseCase, RegisterCourierUseCase>();
+        services.AddScoped<IUpdateCourierUseCase, UpdateCourierUseCase>();
 
         return services;
     }
