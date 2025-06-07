@@ -31,6 +31,7 @@ public static class ApplicationExtensions
 
         // Renting
         services.AddScoped<IRentMotorcycleUseCase, RentMotorcycleUseCase>();
+        services.AddScoped<IGetRentByIdentifierUseCase, GetRentByIdentifierUseCase>();
 
         return services;
     }

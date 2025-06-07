@@ -1,0 +1,34 @@
+﻿using MotoHub.Application.DTOs;
+using MotoHub.Application.Interfaces;
+using MotoHub.Application.Interfaces.UseCases.Renting;
+using MotoHub.Domain.Common;
+using MotoHub.Domain.Entities;
+
+namespace MotoHub.Application.UseCases.Renting;
+
+public class GetRentByIdentifierUseCase(IRentRepository rentRepository) : IGetRentByIdentifierUseCase
+{
+    public async Task<Result<RentDto>> ExecuteAsync(string identifier, CancellationToken cancellationToken = default)
+    {
+        Rent? rent = await rentRepository.GetByIdentifierAsync(identifier, cancellationToken);
+
+        if (rent is null)
+        {
+            return Result<RentDto>.Failure("Aluguel não encontrado", ResultErrorType.NotFound);
+        }
+
+        RentDto resultDto = new()
+        {
+            Identifier = rent.Identifier,
+            MotorcycleIdentifier = rent.MotorcycleIdentifier,
+            TenantIdentifier = rent.TenantIdentifier,
+            StartDate = rent.StartDate,
+            EndDate = rent.EndDate,
+            EstimatedEndDate = rent.EstimatedEndDate,
+            Plan = 0,
+            Status = rent.Status
+        };
+
+        return Result<RentDto>.Success(resultDto);
+    }
+}

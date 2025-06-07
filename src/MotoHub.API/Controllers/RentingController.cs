@@ -34,4 +34,20 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
 
         return result.IsSuccess ? Created() : HandleError(result);
     }
+
+    [HttpGet("{id}")]
+    [EndpointSummary("Consultar locação por id")]
+    [EndpointDescription("Retorna os detalhes de um aluguel específico baseado no identificador")]
+    [ProducesResponseType(typeof(RentDto), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByIdentifier([FromServices] IGetRentByIdentifierUseCase useCase,
+                                                     [FromRoute] string id,
+                                                     CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Fetching rent details for ID: {Id}", id);
+
+        Result<RentDto> result = await useCase.ExecuteAsync(id, cancellationToken);
+
+        return HandleResult(result);
+    }
 }
