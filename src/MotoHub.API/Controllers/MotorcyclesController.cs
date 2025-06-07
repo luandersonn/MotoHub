@@ -43,7 +43,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     {
         logger.LogInformation("Searching motorcycles");
 
-        MotorcycleSearchParametersDto queryDTO = new()
+        MotorcycleSearchParameters queryDTO = new()
         {
             Plate = plate,
             Offset = 0,

@@ -11,6 +11,7 @@ public static class InfrastructureExtensions
         services.AddDbContext<AppDbContext>(static options => options.UseSqlite("Data Source=motohub.db"));
 
         services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

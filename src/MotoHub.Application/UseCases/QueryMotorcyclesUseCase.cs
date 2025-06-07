@@ -8,7 +8,7 @@ namespace MotoHub.Application.UseCases;
 
 public class SearchMotorcyclesUseCase(IMotorcycleRepository motorcycleRepository) : ISearchMotorcyclesUseCase
 {
-    public async Task<Result<List<MotorcycleDto>>> ExecuteAsync(MotorcycleSearchParametersDto dto, CancellationToken cancellationToken = default)
+    public async Task<Result<List<MotorcycleDto>>> ExecuteAsync(MotorcycleSearchParameters dto, CancellationToken cancellationToken = default)
     {
         if (dto.Offset < 0 || dto.Limit <= 0)
         {

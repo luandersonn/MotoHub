@@ -5,5 +5,5 @@ namespace MotoHub.Application.Interfaces.UseCases;
 
 public interface ISearchMotorcyclesUseCase
 {
-    Task<Result<List<MotorcycleDto>>> ExecuteAsync(MotorcycleSearchParametersDto dto, CancellationToken cancellationToken = default);
+    Task<Result<List<MotorcycleDto>>> ExecuteAsync(MotorcycleSearchParameters dto, CancellationToken cancellationToken = default);
 }

@@ -1,14 +1,10 @@
 ﻿namespace MotoHub.Domain.Interfaces;
 
-
 public interface IEntity
 {
-    void SetId(object? id);
-    object? GetId();
-}
-
-public interface IEntity<T> : IEntity
-{
-    void SetId(T? id);
-    new T? GetId();
+    long Id { get; set; }
+    string Identifier { get; set; }
+    DateTimeOffset CreatedAt { get; set; }
+    DateTimeOffset? UpdatedAt { get; set; }
+    DateTimeOffset? DeletedAt { get; set; }
 }

@@ -4,15 +4,15 @@ namespace MotoHub.API.Requests;
 
 public class RegisterMotorcycleRequest
 {
-    [JsonPropertyName("Identificador")]
+    [JsonPropertyName("identificador")]
     public string Identifier { get; set; }
 
-    [JsonPropertyName("Ano")]
+    [JsonPropertyName("ano")]
     public int Year { get; set; }
 
-    [JsonPropertyName("Modelo")]
+    [JsonPropertyName("modelo")]
     public string Model { get; set; }
 
-    [JsonPropertyName("Placa")]
+    [JsonPropertyName("placa")]
     public string Plate { get; set; }
 }

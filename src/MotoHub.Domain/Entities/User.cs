@@ -2,11 +2,11 @@
 
 namespace MotoHub.Domain.Entities;
 
-public class User : AuditableEntity
+public class User : Entity
 {
-    public string Username { get; set; }
-    public string PasswordHash { get; set; }
-    public string Email { get; set; }
-    public string FullName { get; set; }
+    public string Name { get; set; }
+    public string TaxNumber { get; set; }
+    public string? PasswordHash { get; set; }
     public UserRole Role { get; set; }
+    public DateTime BirthDate { get; set; }
 }

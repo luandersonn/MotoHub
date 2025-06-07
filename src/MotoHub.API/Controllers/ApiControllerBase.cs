@@ -32,6 +32,7 @@ public class ApiControllerBase : ControllerBase
             ResultErrorType.NotFound => NotFound(resultObject),
             ResultErrorType.ValidationError => BadRequest(resultObject),
             ResultErrorType.Unauthorized => Unauthorized(resultObject),
+            ResultErrorType.BusinessError => BadRequest(resultObject),
             _ => StatusCode(StatusCodes.Status500InternalServerError, resultObject)
         };
     }
