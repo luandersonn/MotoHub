@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MotoHub.API.Requests;
 using MotoHub.Application.DTOs;
-using MotoHub.Application.Interfaces.UseCases;
+using MotoHub.Application.Interfaces.UseCases.Motorcycles;
 using MotoHub.Domain.Common;
 
 namespace MotoHub.API.Controllers;

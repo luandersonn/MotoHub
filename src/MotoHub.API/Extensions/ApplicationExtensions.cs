@@ -1,6 +1,7 @@
-﻿using MotoHub.Application.Interfaces.UseCases;
-using MotoHub.Application.Interfaces.UseCases.Couriers;
-using MotoHub.Application.UseCases;
+﻿using MotoHub.Application.Interfaces.UseCases.Couriers;
+using MotoHub.Application.Interfaces.UseCases.Motorcycles;
+using MotoHub.Application.UseCases.Couriers;
+using MotoHub.Application.UseCases.Motorcycles;
 
 namespace MotoHub.API.Extensions;
 

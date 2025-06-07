@@ -1,9 +1,9 @@
 ﻿using MotoHub.Application.Interfaces;
-using MotoHub.Application.Interfaces.UseCases;
+using MotoHub.Application.Interfaces.UseCases.Motorcycles;
 using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;
 
-namespace MotoHub.Application.UseCases;
+namespace MotoHub.Application.UseCases.Motorcycles;
 
 public class DeleteMotorcycleUseCase(IMotorcycleRepository motorcycleRepository) : IDeleteMotorcycleUseCase
 {

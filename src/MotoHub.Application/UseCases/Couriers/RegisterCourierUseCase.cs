@@ -5,7 +5,7 @@ using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;
 using MotoHub.Domain.ValueObjects;
 
-namespace MotoHub.Application.UseCases;
+namespace MotoHub.Application.UseCases.Couriers;
 
 public class RegisterCourierUseCase(IUserRepository userRepository) : IRegisterCourierUseCase
 {
