@@ -7,6 +7,7 @@ using MotoHub.Domain.Common;
 namespace MotoHub.API.Controllers;
 
 [Route("entregadores")]
+[Tags("Entregadores")]
 public class CourierController(ILogger<CourierController> logger) : ApiControllerBase
 {
     [HttpPost]

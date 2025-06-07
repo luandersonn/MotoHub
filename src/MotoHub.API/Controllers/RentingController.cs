@@ -7,6 +7,7 @@ using MotoHub.Domain.Common;
 namespace MotoHub.API.Controllers;
 
 [Route("locacao")]
+[Tags("Locação")]
 public class RentingController(ILogger<RentingController> logger) : ApiControllerBase
 {
     [HttpPost]
