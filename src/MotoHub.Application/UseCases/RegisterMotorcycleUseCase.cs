@@ -39,7 +39,8 @@ public class RegisterMotorcycleUseCase(IMotorcycleRepository motorcycleRepositor
             Identifier = dto.Identifier,
             Plate = dto.Plate,
             Year = dto.Year,
-            Model = dto.Model
+            Model = dto.Model,
+            CreatedAt = DateTime.UtcNow,
         };
 
         await motorcycleRepository.AddAsync(motorcycle, cancellationToken);

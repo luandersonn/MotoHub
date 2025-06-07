@@ -16,6 +16,7 @@ public static class ApplicationExtensions
     {
         services.AddScoped<ISearchMotorcyclesUseCase, SearchMotorcyclesUseCase>();
         services.AddScoped<IRegisterMotorcycleUseCase, RegisterMotorcycleUseCase>();
+        services.AddScoped<IGetMotorcycleByIdentifierUseCase, GetMotorcycleByIdentifierUseCase>();
 
         return services;
     }

@@ -3,11 +3,10 @@ using MotoHub.API.Requests;
 using MotoHub.Application.DTOs;
 using MotoHub.Application.Interfaces.UseCases;
 using MotoHub.Domain.Common;
-using MotoHub.Domain.Entities;
 
 namespace MotoHub.API.Controllers;
 
-[Route("Motos")]
+[Route("motos")]
 public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiControllerBase
 {
     [HttpPost]
@@ -19,6 +18,8 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
                                               [FromBody] RegisterMotorcycleRequest registerMotorcycleRequest,
                                               CancellationToken cancellationToken)
     {
+        logger.LogInformation("Registering new motorcycle");
+
         RegisterMotorcycleDto dto = new()
         {
             Identifier = registerMotorcycleRequest.Identifier,
@@ -35,12 +36,12 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     [HttpGet]
     [EndpointSummary("Consultar motos existentes")]
     [EndpointDescription("Consulta e retorna as motos existentes através da placa")]
-    [ProducesResponseType(typeof(IEnumerable<Motorcycle>), StatusCodes.Status200OK, "application/json")]
-    public async Task<IActionResult> GetAsync([FromServices] ISearchMotorcyclesUseCase useCase,
-                                              [FromQuery] string? plate,
-                                              CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(IEnumerable<MotorcycleDto>), StatusCodes.Status200OK, "application/json")]
+    public async Task<IActionResult> SearchAsync([FromServices] ISearchMotorcyclesUseCase useCase,
+                                                 [FromQuery] string? plate,
+                                                 CancellationToken cancellationToken)
     {
-        logger.LogInformation("Fetching motorcycles data.");
+        logger.LogInformation("Searching motorcycles");
 
         MotorcycleSearchParametersDto queryDTO = new()
         {
@@ -50,6 +51,21 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
         };
 
         Result<List<MotorcycleDto>> result = await useCase.ExecuteAsync(queryDTO, cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpGet("{id}")]
+    [EndpointSummary("Consultar motos existentes por id")]
+    [EndpointDescription("Consulta e retorna as motos existentes através do identificador")]
+    [ProducesResponseType(typeof(IEnumerable<MotorcycleDto>), StatusCodes.Status200OK, "application/json")]
+    public async Task<IActionResult> GetByIdentifier([FromServices] IGetMotorcycleByIdentifierUseCase useCase,
+                                                     [FromRoute] string id,
+                                                     CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Fetching motorcycle by identifier");
+
+        Result<MotorcycleDto> result = await useCase.ExecuteAsync(id, cancellationToken);
 
         return HandleResult(result);
     }
