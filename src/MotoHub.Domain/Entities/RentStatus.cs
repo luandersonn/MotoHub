@@ -3,6 +3,5 @@
 public enum RentStatus
 {
     Active = 1,
-    Completed = 2,
-    Canceled = 3,
+    Completed = 2,    
 }

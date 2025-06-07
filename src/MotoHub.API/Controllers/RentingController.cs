@@ -50,4 +50,29 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
 
         return HandleResult(result);
     }
+
+    [HttpPut("{id}/devolucao")]
+    [EndpointSummary("Informar data de devolução e calcular valor")]
+    [EndpointDescription("Define a data em que a moto foi devolvida no sistema e calcula o custo do aluguel")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(RentDto), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ReturnMotorcycle([FromServices] IReturnMotorcycleUseCase useCase,
+                                                      [FromRoute] string id,
+                                                      [FromBody] ReturnMotorcycleRequest returnMotorcycleRequest,
+                                                      CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Processing motorcycle return for rent ID: {Id}", id);
+
+        ReturnMotorcycleDto dto = new()
+        {
+            RentIdentifier = id,
+            ReturnDate = returnMotorcycleRequest.ReturnDate
+        };
+
+        Result<CompletedRentalDto> result = await useCase.ExecuteAsync(dto, cancellationToken);
+
+        return HandleResult(result);
+    }
+
 }
