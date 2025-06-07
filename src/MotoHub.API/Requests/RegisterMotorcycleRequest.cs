@@ -6,7 +6,7 @@ public class RegisterMotorcycleRequest
 {
     [JsonPropertyName("Identificador")]
     public string Identifier { get; set; }
-    
+
     [JsonPropertyName("Ano")]
     public int Year { get; set; }
 

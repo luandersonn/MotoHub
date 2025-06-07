@@ -38,7 +38,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     [EndpointDescription("Consulta e retorna as motos existentes através da placa")]
     [ProducesResponseType(typeof(IEnumerable<MotorcycleDto>), StatusCodes.Status200OK, "application/json")]
     public async Task<IActionResult> SearchAsync([FromServices] ISearchMotorcyclesUseCase useCase,
-                                                 [FromQuery] string? plate,
+                                                 [FromQuery(Name = "placa")] string? plate,
                                                  CancellationToken cancellationToken)
     {
         logger.LogInformation("Searching motorcycles");
@@ -54,6 +54,33 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
 
         return HandleResult(result);
     }
+
+    [HttpPut("{id}/placa")]
+    [EndpointSummary("Modificar a placa de uma moto")]
+    [EndpointDescription("Atualiza parcialmente os dados de uma moto no sistema com base no identificador")]
+    [Consumes("application/json")]
+    [ProducesResponseType(typeof(MotorcycleDto), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update([FromServices] IUpdateMotorcycleUseCase useCase,
+                                            [FromRoute] string id,
+                                            [FromBody] UpdateMotorcycleRequest updateMotorcycleRequest,
+                                            CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Updating motorcycle with identifier: {Identifier}", id);
+
+        UpdateMotorcycleDto dto = new()
+        {
+            Plate = updateMotorcycleRequest.Plate,
+        };
+
+        Result<MotorcycleDto> result = await useCase.ExecuteAsync(id, dto, cancellationToken);
+
+        return result.IsSuccess ? Ok(new
+        {
+            mensagem = "Placa atualizada com sucesso",
+        }) : HandleError(result);
+    }
+
 
     [HttpGet("{id}")]
     [EndpointSummary("Consultar motos existentes por id")]

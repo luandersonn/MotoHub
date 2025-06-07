@@ -8,7 +8,7 @@ public static class ApplicationExtensions
     public static IServiceCollection AddApplicationLayer(this IServiceCollection services)
     {
         services.AddUseCases();
-        
+
         return services;
     }
 
@@ -16,6 +16,7 @@ public static class ApplicationExtensions
     {
         services.AddScoped<ISearchMotorcyclesUseCase, SearchMotorcyclesUseCase>();
         services.AddScoped<IRegisterMotorcycleUseCase, RegisterMotorcycleUseCase>();
+        services.AddScoped<IUpdateMotorcycleUseCase, UpdateMotorcycleUseCase>();
         services.AddScoped<IGetMotorcycleByIdentifierUseCase, GetMotorcycleByIdentifierUseCase>();
         services.AddScoped<IDeleteMotorcycleUseCase, DeleteMotorcycleUseCase>();
 
