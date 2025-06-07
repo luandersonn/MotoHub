@@ -3,15 +3,7 @@ using MotoHub.Domain.Entities;
 
 namespace MotoHub.Infrastructure.Persistence;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions options) : base(options)
-    {
-    }
-
-    protected AppDbContext()
-    {
-    }
-
     public DbSet<Motorcycle> Motorcycles { get; set; } = null!;
 }
