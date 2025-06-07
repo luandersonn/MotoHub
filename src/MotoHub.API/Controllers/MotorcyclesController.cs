@@ -13,7 +13,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     [EndpointSummary("Cadastrar uma nova moto")]
     [EndpointDescription("Cadastrar uma nova moto no sistema e disponibilizar para aluguel")]
     [Consumes("application/json")]
-    [Produces("application/json")]
+    [ProducesResponseType(typeof(MotorcycleDto), StatusCodes.Status201Created, "application/json")]
     public async Task<IActionResult> Register([FromServices] IRegisterMotorcycleUseCase useCase,
                                               [FromBody] RegisterMotorcycleRequest registerMotorcycleRequest,
                                               CancellationToken cancellationToken)
@@ -58,7 +58,8 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     [HttpGet("{id}")]
     [EndpointSummary("Consultar motos existentes por id")]
     [EndpointDescription("Consulta e retorna as motos existentes através do identificador")]
-    [ProducesResponseType(typeof(IEnumerable<MotorcycleDto>), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(typeof(MotorcycleDto), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdentifier([FromServices] IGetMotorcycleByIdentifierUseCase useCase,
                                                      [FromRoute] string id,
                                                      CancellationToken cancellationToken)
@@ -69,4 +70,21 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
 
         return HandleResult(result);
     }
+
+    [HttpDelete("{id}")]
+    [EndpointSummary("Remover moto cadastrada")]
+    [EndpointDescription("Remove uma moto pelo identificador")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteMotorcycle([FromServices] IDeleteMotorcycleUseCase useCase,
+                                                      [FromRoute] string id,
+                                                      CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Deleting motorcycle by identifier");
+
+        Result result = await useCase.ExecuteAsync(id, cancellationToken);
+
+        return HandleResult(result);
+    }
+
 }
