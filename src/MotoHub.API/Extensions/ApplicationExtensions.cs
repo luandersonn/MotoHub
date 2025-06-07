@@ -1,7 +1,9 @@
 ﻿using MotoHub.Application.Interfaces.UseCases.Couriers;
 using MotoHub.Application.Interfaces.UseCases.Motorcycles;
+using MotoHub.Application.Interfaces.UseCases.Renting;
 using MotoHub.Application.UseCases.Couriers;
 using MotoHub.Application.UseCases.Motorcycles;
+using MotoHub.Application.UseCases.Renting;
 
 namespace MotoHub.API.Extensions;
 
@@ -26,6 +28,9 @@ public static class ApplicationExtensions
         // Courier
         services.AddScoped<IRegisterCourierUseCase, RegisterCourierUseCase>();
         services.AddScoped<IUpdateCourierUseCase, UpdateCourierUseCase>();
+
+        // Renting
+        services.AddScoped<IRentMotorcycleUseCase, RentMotorcycleUseCase>();
 
         return services;
     }

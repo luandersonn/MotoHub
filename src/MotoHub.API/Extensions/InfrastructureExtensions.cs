@@ -12,6 +12,7 @@ public static class InfrastructureExtensions
 
         services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRentRepository, RentRepository>();
 
         return services;
     }
