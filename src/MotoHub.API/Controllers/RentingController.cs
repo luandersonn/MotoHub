@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MotoHub.API.Extensions;
 using MotoHub.API.Requests;
+using MotoHub.API.Responses;
 using MotoHub.Application.DTOs;
 using MotoHub.Application.Interfaces.UseCases.Renting;
 using MotoHub.Domain.Common;
@@ -14,7 +16,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
     [EndpointSummary("Alugar uma moto")]
     [EndpointDescription("Registra um novo aluguel de moto no sistema")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(RentDto), StatusCodes.Status201Created, "application/json")]
+    [ProducesResponseType(typeof(RentDetailsResponse), StatusCodes.Status201Created, "application/json")]
     public async Task<IActionResult> RentMotorcycle([FromServices] IRentMotorcycleUseCase useCase,
                                                     [FromBody] RentMotorcycleRequest rentMotorcycleRequest,
                                                     CancellationToken cancellationToken)
@@ -23,23 +25,31 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
 
         RentMotorcycleDto dto = new()
         {
+            Identifier = rentMotorcycleRequest.Identifier,
             TenantIdentifier = rentMotorcycleRequest.TenantIdentifier,
             MotorcycleIdentifier = rentMotorcycleRequest.MotorcycleIdentifier,
-            StartDate = rentMotorcycleRequest.StartDate,
-            EndDate = rentMotorcycleRequest.EndDate,
-            EstimatedEndDate = rentMotorcycleRequest.EstimatedEndDate,
-            Plan = rentMotorcycleRequest.Plan
+            Plan = rentMotorcycleRequest.Plan,
         };
 
-        Result<RentDto> result = await useCase.ExecuteAsync(dto, cancellationToken);
+        Result<RentDetailsResponse> result = await useCase.ExecuteAsync(dto, cancellationToken)
+                                                          .MapResultTo(r => new RentDetailsResponse
+                                                          {
+                                                              Identifier = r.Identifier,
+                                                              MotorcycleIdentifier = r.MotorcycleIdentifier,
+                                                              TenantIdentifier = r.TenantIdentifier,
+                                                              StartDate = r.StartDate,
+                                                              EndDate = r.EndDate,
+                                                              EstimatedEndDate = r.EstimatedEndDate,
+                                                              DailyRate = r.DailyRate,
+                                                          });
 
-        return result.IsSuccess ? Created() : HandleError(result);
+        return result.IsSuccess ? Created($"{Request.Path}/{result.Value!.Identifier}", result.Value) : HandleError(result);
     }
 
     [HttpGet("{id}")]
     [EndpointSummary("Consultar locação por id")]
     [EndpointDescription("Retorna os detalhes de um aluguel específico baseado no identificador")]
-    [ProducesResponseType(typeof(RentDto), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(typeof(RentDetailsResponse), StatusCodes.Status200OK, "application/json")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdentifier([FromServices] IGetRentByIdentifierUseCase useCase,
                                                      [FromRoute] string id,
@@ -47,7 +57,18 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
     {
         logger.LogInformation("Fetching rent details for ID: {Id}", id);
 
-        Result<RentDto> result = await useCase.ExecuteAsync(id, cancellationToken);
+        Result<RentDetailsResponse> result = await useCase.ExecuteAsync(id, cancellationToken)
+                                                          .MapResultTo(r => new RentDetailsResponse
+                                                          {
+                                                              Identifier = r.Identifier,
+                                                              MotorcycleIdentifier = r.MotorcycleIdentifier,
+                                                              TenantIdentifier = r.TenantIdentifier,
+                                                              StartDate = r.StartDate,
+                                                              EndDate = r.EndDate,
+                                                              EstimatedEndDate = r.EstimatedEndDate,
+                                                              DailyRate = r.DailyRate,
+                                                              ReturnDate = r.EndDate,
+                                                          });
 
         return HandleResult(result);
     }
@@ -56,7 +77,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
     [EndpointSummary("Informar data de devolução e calcular valor")]
     [EndpointDescription("Define a data em que a moto foi devolvida no sistema e calcula o custo do aluguel")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(RentDto), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(typeof(CompletedRentalResponse), StatusCodes.Status200OK, "application/json")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ReturnMotorcycle([FromServices] IReturnMotorcycleUseCase useCase,
                                                       [FromRoute] string id,
@@ -71,7 +92,17 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
             ReturnDate = returnMotorcycleRequest.ReturnDate
         };
 
-        Result<CompletedRentalDto> result = await useCase.ExecuteAsync(dto, cancellationToken);
+        Result<CompletedRentalResponse> result = await useCase.ExecuteAsync(dto, cancellationToken)
+                                                              .MapResultTo(x => new CompletedRentalResponse
+                                                              {
+                                                                  Identifier = x.Identifier,
+                                                                  MotorcycleIdentifier = x.MotorcycleIdentifier,
+                                                                  TenantIdentifier = x.TenantIdentifier,
+                                                                  StartDate = x.StartDate,
+                                                                  EndDate = x.EndDate,
+                                                                  TotalCost = x.TotalCost,
+                                                                  Status = x.Status,
+                                                              });
 
         return HandleResult(result);
     }

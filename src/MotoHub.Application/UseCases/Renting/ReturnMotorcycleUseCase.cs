@@ -3,6 +3,7 @@ using MotoHub.Application.Interfaces;
 using MotoHub.Application.Interfaces.UseCases.Renting;
 using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;
+using MotoHub.Domain.Interfaces;
 
 namespace MotoHub.Application.UseCases.Renting;
 
@@ -17,11 +18,6 @@ public class ReturnMotorcycleUseCase(IRentRepository rentRepository, IRentPricin
             return Result<CompletedRentalDto>.Failure("Aluguel não encontrado", ResultErrorType.NotFound);
         }
 
-        if (dto.ReturnDate < rent.StartDate)
-        {
-            return Result<CompletedRentalDto>.Failure("A data de devolução não pode ser anterior à data de início do aluguel", ResultErrorType.ValidationError);
-        }
-
         if (rent.Status != RentStatus.Active)
         {
             return Result<CompletedRentalDto>.Failure("Este aluguel já foi encerrado", ResultErrorType.BusinessError);
@@ -30,7 +26,7 @@ public class ReturnMotorcycleUseCase(IRentRepository rentRepository, IRentPricin
         rent.EndDate = dto.ReturnDate;
         rent.Status = RentStatus.Completed;
 
-        decimal totalCost = pricingCalculator.CalculateRentalCost(rent, DateOnly.FromDateTime(dto.ReturnDate));
+        decimal totalCost = pricingCalculator.CalculateRentalCost(rent, dto.ReturnDate);
 
         await rentRepository.UpdateAsync(rent, cancellationToken);
 

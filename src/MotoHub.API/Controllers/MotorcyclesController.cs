@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using MotoHub.API.Extensions;
 using MotoHub.API.Requests;
+using MotoHub.API.Responses;
 using MotoHub.Application.DTOs;
 using MotoHub.Application.Interfaces.UseCases.Motorcycles;
 using MotoHub.Domain.Common;
@@ -14,7 +16,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     [EndpointSummary("Cadastrar uma nova moto")]
     [EndpointDescription("Cadastrar uma nova moto no sistema e disponibilizar para aluguel")]
     [Consumes("application/json")]
-    [ProducesResponseType(typeof(MotorcycleDto), StatusCodes.Status201Created, "application/json")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> Register([FromServices] IRegisterMotorcycleUseCase useCase,
                                               [FromBody] RegisterMotorcycleRequest registerMotorcycleRequest,
                                               CancellationToken cancellationToken)
@@ -51,7 +53,14 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
             Limit = 100,
         };
 
-        Result<List<MotorcycleDto>> result = await useCase.ExecuteAsync(queryDTO, cancellationToken);
+        Result<List<MotorcycleResponse>> result = await useCase.ExecuteAsync(queryDTO, cancellationToken)
+                                                               .MapResultTo((MotorcycleDto m) => new MotorcycleResponse
+                                                               {
+                                                                   Identifier = m.Identifier,
+                                                                   Model = m.Model,
+                                                                   Plate = m.Plate,
+                                                                   Year = m.Year,
+                                                               });
 
         return HandleResult(result);
     }
@@ -86,7 +95,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     [HttpGet("{id}")]
     [EndpointSummary("Consultar motos existentes por id")]
     [EndpointDescription("Consulta e retorna as motos existentes através do identificador")]
-    [ProducesResponseType(typeof(MotorcycleDto), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(typeof(MotorcycleResponse), StatusCodes.Status200OK, "application/json")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdentifier([FromServices] IGetMotorcycleByIdentifierUseCase useCase,
                                                      [FromRoute] string id,
@@ -94,7 +103,14 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     {
         logger.LogInformation("Fetching motorcycle by identifier");
 
-        Result<MotorcycleDto> result = await useCase.ExecuteAsync(id, cancellationToken);
+        Result<MotorcycleResponse> result = await useCase.ExecuteAsync(id, cancellationToken)
+                                                         .MapResultTo(x => new MotorcycleResponse
+                                                         {
+                                                             Identifier = x.Identifier,
+                                                             Model = x.Model,
+                                                             Plate = x.Plate,
+                                                             Year = x.Year,
+                                                         });
 
         return HandleResult(result);
     }

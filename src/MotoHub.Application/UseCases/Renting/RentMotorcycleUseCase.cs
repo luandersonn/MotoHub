@@ -3,13 +3,30 @@ using MotoHub.Application.Interfaces;
 using MotoHub.Application.Interfaces.UseCases.Renting;
 using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;
+using MotoHub.Domain.Interfaces;
+using MotoHub.Domain.ValueObjects;
 
 namespace MotoHub.Application.UseCases.Renting;
 
-public class RentMotorcycleUseCase(IRentRepository rentRepository, IMotorcycleRepository motorcycleRepository, IUserRepository userRepository) : IRentMotorcycleUseCase
+public class RentMotorcycleUseCase(IRentRepository rentRepository,
+                                   IMotorcycleRepository motorcycleRepository,
+                                   IUserRepository userRepository,
+                                   IRentPlanCatalog rentPlanCatalog) : IRentMotorcycleUseCase
 {
     public async Task<Result<RentDto>> ExecuteAsync(RentMotorcycleDto dto, CancellationToken cancellationToken = default)
     {
+        if (string.IsNullOrWhiteSpace(dto.Identifier))
+        {
+            dto.Identifier = Guid.NewGuid().ToString();
+        }
+        else
+        {
+            if (await rentRepository.GetByIdentifierAsync(dto.Identifier, cancellationToken) is not null)
+            {
+                return Result<RentDto>.Failure("Identificador de locação já existe", ResultErrorType.ValidationError);
+            }
+        }
+
         if (string.IsNullOrWhiteSpace(dto.TenantIdentifier))
         {
             return Result<RentDto>.Failure("Identificador do locatário inválido", ResultErrorType.ValidationError);
@@ -18,6 +35,13 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository, IMotorcycleRe
         if (string.IsNullOrWhiteSpace(dto.MotorcycleIdentifier))
         {
             return Result<RentDto>.Failure("Identificador da moto inválido", ResultErrorType.ValidationError);
+        }
+
+        RentPlan? plan = rentPlanCatalog.FindPlanByNumber(dto.Plan);
+
+        if (plan is null)
+        {
+            return Result<RentDto>.Failure("Plano de aluguel inválido", ResultErrorType.ValidationError);
         }
 
         Motorcycle? motorcycle = await motorcycleRepository.GetByIdentifierAsync(dto.MotorcycleIdentifier, cancellationToken);
@@ -41,15 +65,21 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository, IMotorcycleRe
             return Result<RentDto>.Failure("Esta moto já está alugada", ResultErrorType.BusinessError);
         }
 
+        DateTime startDate = DateTime.Now.AddDays(-4).AddDays(1).Date;
+        DateTime estimatedEndDate = startDate.AddDays(plan.DurationInDays).Date;
+
         Rent rent = new()
         {
-            Identifier = Guid.NewGuid().ToString(),
+            Identifier = dto.Identifier,
             MotorcycleIdentifier = dto.MotorcycleIdentifier,
             TenantIdentifier = dto.TenantIdentifier,
-            StartDate = dto.StartDate,
-            EndDate = dto.EndDate,
-            EstimatedEndDate = dto.EstimatedEndDate,
-            Status = RentStatus.Active
+            StartDate = startDate,
+            EndDate = null,
+            EstimatedEndDate = estimatedEndDate,
+            Status = RentStatus.Active,
+            DailyRate = plan.DailyRate,
+            EarlyReturnDailyPenalty = plan.EarlyReturnDailyPenalty,
+            LateReturnDailyFee = plan.LateReturnDailyFee
         };
 
         await rentRepository.AddAsync(rent, cancellationToken);
@@ -62,6 +92,8 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository, IMotorcycleRe
             StartDate = rent.StartDate,
             EndDate = rent.EndDate,
             EstimatedEndDate = rent.EstimatedEndDate,
+            Plan = plan.PlanNumber,
+            DailyRate = plan.DailyRate,
             Status = rent.Status
         };
 

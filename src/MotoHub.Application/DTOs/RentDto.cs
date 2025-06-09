@@ -11,5 +11,6 @@ public class RentDto
     public DateTime? EndDate { get; set; }
     public DateTime EstimatedEndDate { get; set; }
     public int Plan { get; set; }
-    public RentStatus Status { get; set; }
+    public required RentStatus Status { get; set; }
+    public required decimal DailyRate { get; set; }
 }

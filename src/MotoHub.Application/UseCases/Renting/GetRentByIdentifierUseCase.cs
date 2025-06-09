@@ -25,8 +25,8 @@ public class GetRentByIdentifierUseCase(IRentRepository rentRepository) : IGetRe
             StartDate = rent.StartDate,
             EndDate = rent.EndDate,
             EstimatedEndDate = rent.EstimatedEndDate,
-            Plan = 0,
-            Status = rent.Status
+            Status = rent.Status,
+            DailyRate = rent.DailyRate,
         };
 
         return Result<RentDto>.Success(resultDto);

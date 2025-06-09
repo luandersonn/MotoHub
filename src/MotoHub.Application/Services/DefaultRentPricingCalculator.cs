@@ -1,26 +1,62 @@
-﻿using MotoHub.Application.Interfaces;
-using MotoHub.Domain.Entities;
+﻿using MotoHub.Domain.Entities;
+using MotoHub.Domain.Interfaces;
 
 namespace MotoHub.Application.Services;
 
 public class DefaultRentPricingCalculator : IRentPricingCalculator
 {
-    public decimal CalculateRentalCost(Rent rent, DateOnly rentalEndDate)
+    public decimal CalculateRentalCost(Rent rent, DateTime rentalEndDate)
     {
-        TimeSpan rentalPeriod = (rentalEndDate.ToDateTime(TimeOnly.MinValue) - rent.StartDate);
+        decimal baseCost = CalculateBaseCost(rent, rentalEndDate);
+        decimal earlyPenalty = CalculateEarlyReturnPenalty(rent, rentalEndDate);
+        decimal lateFee = CalculateLateReturnFee(rent, rentalEndDate);
 
-        int totalDays = (int)Math.Ceiling(rentalPeriod.TotalDays);
-
-        decimal dailyRate = totalDays switch
-        {
-            >= 50 => 18m,
-            >= 45 => 20m,
-            >= 30 => 22m,
-            >= 15 => 28m,
-            >= 7 => 30m,
-            _ => 30m,
-        };
-
-        return dailyRate * totalDays;
+        decimal total = baseCost + earlyPenalty + lateFee;
+        return Math.Max(total, 0);
     }
+
+    private static decimal CalculateBaseCost(Rent rent, DateTime rentalEndDate)
+    {
+        DateTime costEndDate = IsLateReturn(rent, rentalEndDate)
+                               ? rent.EstimatedEndDate
+                               : rentalEndDate;
+
+        int usedDays = GetUsedDays(rent.StartDate, costEndDate);
+        return usedDays * rent.DailyRate;
+    }
+
+    private static decimal CalculateEarlyReturnPenalty(Rent rent, DateTime rentalEndDate)
+    {
+        if (!IsEarlyReturn(rent, rentalEndDate))
+        {
+            return 0;
+        }
+
+        int unusedDays = GetUnusedDays(rent.EstimatedEndDate, rentalEndDate);
+        return unusedDays * rent.DailyRate * rent.EarlyReturnDailyPenalty;
+    }
+
+    private static decimal CalculateLateReturnFee(Rent rent, DateTime rentalEndDate)
+    {
+        if (!IsLateReturn(rent, rentalEndDate))
+        {
+            return 0;
+        }
+
+        int extraDays = GetExtraDays(rent.EstimatedEndDate, rentalEndDate);
+        return extraDays * rent.LateReturnDailyFee;
+    }
+
+    private static int GetUsedDays(DateTime startDate, DateTime endDate) =>
+        Math.Max(0, (int)Math.Ceiling((endDate - startDate).TotalDays));
+
+    private static int GetExtraDays(DateTime estimatedEnd, DateTime actualEnd) =>
+        Math.Max(0, (int)Math.Ceiling((actualEnd - estimatedEnd).TotalDays));
+
+    private static int GetUnusedDays(DateTime estimatedEnd, DateTime actualEnd) =>
+        Math.Max(0, (int)Math.Ceiling((estimatedEnd - actualEnd).TotalDays));
+
+    private static bool IsEarlyReturn(Rent rent, DateTime endDate) => endDate < rent.EstimatedEndDate;
+
+    private static bool IsLateReturn(Rent rent, DateTime endDate) => endDate > rent.EstimatedEndDate;
 }

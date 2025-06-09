@@ -4,6 +4,9 @@ namespace MotoHub.API.Requests;
 
 public class RentMotorcycleRequest
 {
+    [JsonPropertyName("identificador")]
+    public string? Identifier { get; set; }
+
     [JsonPropertyName("entregador_id")]
     public string TenantIdentifier { get; set; }
 
