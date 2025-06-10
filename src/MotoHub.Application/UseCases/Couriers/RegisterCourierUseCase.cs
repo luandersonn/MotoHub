@@ -76,7 +76,7 @@ public class RegisterCourierUseCase(IUserRepository userRepository, IImageReposi
             BirthDate = DateOnly.FromDateTime(user.BirthDate),
             DriverLicenseNumber = user.DriverLicenseNumber,
             DriverLicenseType = user.DriverLicenseType,
-            //DriverLicenseImage = user.DriverLicenseImage
+            DriverLicenseImageBase64 = dto.DriverLicenseImageBase64,
         };
 
         return Result<CourierDto>.Success(resultDto);
