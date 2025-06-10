@@ -23,6 +23,11 @@ public class ReturnMotorcycleUseCase(IRentRepository rentRepository, IRentPricin
             return Result<CompletedRentalDto>.Failure("Este aluguel já foi encerrado", ResultErrorType.BusinessError);
         }
 
+        if (dto.ReturnDate < rent.StartDate)
+        {
+            return Result<CompletedRentalDto>.Failure("Data de devolução inválida", ResultErrorType.BusinessError);
+        }
+
         rent.EndDate = dto.ReturnDate;
         rent.Status = RentStatus.Completed;
 

@@ -7,6 +7,11 @@ public class DefaultRentPricingCalculator : IRentPricingCalculator
 {
     public decimal CalculateRentalCost(Rent rent, DateTime rentalEndDate)
     {
+        if (rent.StartDate.Date > rentalEndDate.Date)
+        {
+            throw new ArgumentException("A data de devolução deve ser após a data de inicio do aluguel");
+        }
+
         decimal baseCost = CalculateBaseCost(rent, rentalEndDate);
         decimal earlyPenalty = CalculateEarlyReturnPenalty(rent, rentalEndDate);
         decimal lateFee = CalculateLateReturnFee(rent, rentalEndDate);

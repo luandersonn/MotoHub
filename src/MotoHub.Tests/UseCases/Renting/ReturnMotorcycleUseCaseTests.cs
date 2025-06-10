@@ -73,6 +73,33 @@ public class ReturnMotorcycleUseCaseTests
     }
 
     [Test]
+    public async Task ExecuteAsync_WithInvalidReturnDate_ShouldReturnBusinessError()
+    {
+        ReturnMotorcycleDto dto = new()
+        {
+            RentIdentifier = "rent-001",
+            ReturnDate = DateTime.UtcNow.AddDays(-1) // Data de devolução anterior a data de início
+        };
+
+        Rent rent = new()
+        {
+            Identifier = dto.RentIdentifier,
+            Status = RentStatus.Active,
+            StartDate = DateTime.UtcNow
+        };
+        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
+                           .ReturnsAsync(rent);
+
+        Result<CompletedRentalDto> result = await _useCase.ExecuteAsync(dto);
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.IsSuccess, Is.False);
+            Assert.That(result.ErrorType, Is.EqualTo(ResultErrorType.BusinessError));
+            Assert.That(result.ErrorMessage, Is.EqualTo("Data de devolução inválida"));
+        });
+    }
+
+    [Test]
     public async Task ExecuteAsync_WithValidData_ShouldReturnCompletedRentalSuccessfully()
     {
         ReturnMotorcycleDto dto = new()
