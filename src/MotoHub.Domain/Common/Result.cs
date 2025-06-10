@@ -3,30 +3,30 @@
 public class Result
 {
     public bool IsSuccess { get; }
-    public string? Error { get; }
+    public string? ErrorMessage { get; }
     public ResultErrorType? ErrorType { get; }
 
-    protected Result(bool isSuccess, string? error, ResultErrorType? errorType)
+    protected Result(bool isSuccess, string? errorMessage, ResultErrorType? errorType)
     {
         IsSuccess = isSuccess;
-        Error = error;
+        ErrorMessage = errorMessage;
         ErrorType = errorType;
     }
 
     public static Result Success() => new(true, null, null);
-    public static Result Failure(string error, ResultErrorType errorType) => new(false, error, errorType);
+    public static Result Failure(string errorMessage, ResultErrorType errorType) => new(false, errorMessage, errorType);
 }
 
 public class Result<T> : Result
 {
-    public T? Value { get; }
+    public T? Data { get; }
 
-    private Result(T? value, bool isSuccess, string? error, ResultErrorType? errorType)
-        : base(isSuccess, error, errorType)
+    private Result(T? data, bool isSuccess, string? errorMessage, ResultErrorType? errorType)
+        : base(isSuccess, errorMessage, errorType)
     {
-        Value = value;
+        Data = data;
     }
 
-    public static Result<T> Success(T value) => new(value, true, null, null);
-    public static new Result<T> Failure(string error, ResultErrorType errorType) => new(default, false, error, errorType);
+    public static Result<T> Success(T data) => new(data, true, null, null);
+    public static new Result<T> Failure(string errorMessage, ResultErrorType errorType) => new(default, false, errorMessage, errorType);
 }

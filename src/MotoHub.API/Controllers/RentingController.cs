@@ -29,7 +29,7 @@ public class RentingController(IMapper mapper, ILogger<RentingController> logger
         Result<RentDetailsResponse> result = await useCase.ExecuteAsync(dto, cancellationToken)
                                                           .MapResultTo(mapper.Map<RentDetailsResponse>);
 
-        return result.IsSuccess ? Created($"{Request.Path}/{result.Value!.Identifier}", result.Value) : HandleError(result);
+        return result.IsSuccess ? Created($"{Request.Path}/{result.Data!.Identifier}", result.Data) : HandleError(result);
     }
 
     [HttpGet("{id}")]

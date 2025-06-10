@@ -17,8 +17,8 @@ public static class ResultExtensions
     public static Result<TDestination> MapResultTo<TSource, TDestination>(this Result<TSource> result, Func<TSource, TDestination> mapper)
     {
         return result.IsSuccess
-               ? Result<TDestination>.Success(mapper(result.Value!))
-               : Result<TDestination>.Failure(result.Error!, result.ErrorType!.Value);
+               ? Result<TDestination>.Success(mapper(result.Data!))
+               : Result<TDestination>.Failure(result.ErrorMessage!, result.ErrorType!.Value);
     }
 
     public static async Task<Result<List<TDestination>>> MapResultTo<TList, TSource, TDestination>(this Task<Result<TList>> task,
@@ -33,9 +33,9 @@ public static class ResultExtensions
     {
         if (result.IsSuccess)
         {
-            List<TDestination> mappedList = [.. result.Value!.Select(x => mapper(x))];
+            List<TDestination> mappedList = [.. result.Data!.Select(x => mapper(x))];
             return Result<List<TDestination>>.Success(mappedList);
         }
-        return Result<List<TDestination>>.Failure(result.Error!, result.ErrorType!.Value);
+        return Result<List<TDestination>>.Failure(result.ErrorMessage!, result.ErrorType!.Value);
     }
 }

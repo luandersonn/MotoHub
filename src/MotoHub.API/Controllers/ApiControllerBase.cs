@@ -16,7 +16,7 @@ public class ApiControllerBase : ControllerBase
     protected virtual IActionResult HandleResult<T>(Result<T> result)
     {
         return result.IsSuccess
-            ? Ok(result.Value)
+            ? Ok(result.Data)
             : HandleError(result);
     }
 
@@ -24,7 +24,7 @@ public class ApiControllerBase : ControllerBase
     {
         var resultObject = new
         {
-            mensagem = result.Error
+            mensagem = result.ErrorMessage
         };
 
         return result.ErrorType switch
