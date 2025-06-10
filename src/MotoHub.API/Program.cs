@@ -1,4 +1,5 @@
 using MotoHub.API.Extensions;
+using MotoHub.API.Middlewares;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -36,7 +37,10 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
+
 app.MapControllers();
+
 
 app.EnsureDatabaseCreated();
 
