@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using MotoHub.Domain.ValueObjects;
+using System.Text.Json.Serialization;
 
 namespace MotoHub.API.Requests;
 
@@ -20,7 +21,7 @@ public class RegisterCourierRequest
     public string DriverLicenseNumber { get; set; }
 
     [JsonPropertyName("tipo_cnh")]
-    public string DriverLicenseType { get; set; }
+    public DriverLicenseType DriverLicenseType { get; set; }
 
     [JsonPropertyName("imagem_CNH")]
     public string DriverLicenseImageBase64 { get; set; }

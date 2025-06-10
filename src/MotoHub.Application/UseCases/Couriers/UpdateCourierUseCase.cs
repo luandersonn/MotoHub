@@ -31,15 +31,20 @@ public class UpdateCourierUseCase(IUserRepository userRepository) : IUpdateCouri
         {
             user.BirthDate = dto.BirthDate.Value;
         }
-        
+
         if (!string.IsNullOrWhiteSpace(dto.DriverLicenseNumber))
         {
-            //user.DriverLicenseNumber = dto.DriverLicenseNumber;
+            if (await IsDriverLicenseNumberInUseAsync(dto.DriverLicenseNumber, identifier, cancellationToken))
+            {
+                return Result<CourierDto>.Failure("Já existe um usuário com este número de CNH", ResultErrorType.BusinessError);
+            }
+
+            user.DriverLicenseNumber = dto.DriverLicenseNumber;
         }
 
-        if (!string.IsNullOrWhiteSpace(dto.DriverLicenseType))
+        if (dto.DriverLicenseType is not null)
         {
-            //user.DriverLicenseType = dto.DriverLicenseType;
+            user.DriverLicenseType = dto.DriverLicenseType;
         }
 
         if (!string.IsNullOrWhiteSpace(dto.DriverLicenseImageBase64))
@@ -57,11 +62,17 @@ public class UpdateCourierUseCase(IUserRepository userRepository) : IUpdateCouri
             Name = user.Name,
             TaxNumber = user.TaxNumber,
             BirthDate = DateOnly.FromDateTime(user.BirthDate),
-            //DriverLicenseNumber = user.DriverLicenseNumber,
-            //DriverLicenseType = user.DriverLicenseType,
+            DriverLicenseNumber = user.DriverLicenseNumber,
+            DriverLicenseType = user.DriverLicenseType,
             //DriverLicenseImage = user.DriverLicenseImage
         };
 
         return Result<CourierDto>.Success(resultDto);
+    }
+
+    private async Task<bool> IsDriverLicenseNumberInUseAsync(string licenseNumber, string identifier, CancellationToken cancellationToken)
+    {
+        User? userWithSameDriverLicense = await userRepository.GetUserByLicenseNumberAsync(licenseNumber, cancellationToken);
+        return userWithSameDriverLicense is not null && userWithSameDriverLicense.Identifier != identifier;
     }
 }

@@ -6,6 +6,6 @@ public class UserSearchParameters : PagedSearchParameters
 {
     public UserRole? Role { get; set; }
     public string? Name { get; set; }
-    public string? TaxtNumber { get; set; }
-    public string? DriverLicenseCode { get; set; }
+    public string? TaxNumber { get; set; }
+    public string? DriverLicenseNumber { get; set; }
 }

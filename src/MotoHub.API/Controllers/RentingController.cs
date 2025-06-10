@@ -41,6 +41,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
                                                               EndDate = r.EndDate,
                                                               EstimatedEndDate = r.EstimatedEndDate,
                                                               DailyRate = r.DailyRate,
+                                                              Status = r.Status,
                                                           });
 
         return result.IsSuccess ? Created($"{Request.Path}/{result.Value!.Identifier}", result.Value) : HandleError(result);
@@ -68,6 +69,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
                                                               EstimatedEndDate = r.EstimatedEndDate,
                                                               DailyRate = r.DailyRate,
                                                               ReturnDate = r.EndDate,
+                                                              Status = r.Status,
                                                           });
 
         return HandleResult(result);

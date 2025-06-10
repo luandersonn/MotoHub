@@ -58,6 +58,11 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
             return Result<RentDto>.Failure("Usuário locatário não encontrado", ResultErrorType.NotFound);
         }
 
+        if (tenant.DriverLicenseType is not DriverLicenseType.A and not DriverLicenseType.AB)
+        {
+            return Result<RentDto>.Failure("O entregador não tem o tipo de licença A para realizar o aluguel", ResultErrorType.BusinessError);
+        }
+
         Rent? existingRent = await rentRepository.GetActiveRentByMotorcycleAsync(dto.MotorcycleIdentifier, cancellationToken);
 
         if (existingRent is not null)

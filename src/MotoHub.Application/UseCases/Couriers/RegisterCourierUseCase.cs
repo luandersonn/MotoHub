@@ -38,17 +38,30 @@ public class RegisterCourierUseCase(IUserRepository userRepository) : IRegisterC
             return Result<CourierDto>.Failure("Já existe um usuário com este identificador no sistema", ResultErrorType.BusinessError);
         }
 
+        user = await userRepository.GetUserByTaxNumberAsync(dto.TaxNumber, cancellationToken);
+
+        if (user is not null)
+        {
+            return Result<CourierDto>.Failure("Já existe um usuário com este CNPJ", ResultErrorType.BusinessError);
+        }
+
+        user = await userRepository.GetUserByLicenseNumberAsync(dto.DriverLicenseNumber, cancellationToken);
+
+        if (user is not null)
+        {
+            return Result<CourierDto>.Failure("Já existe um usuário com esta CNH", ResultErrorType.BusinessError);
+        }
+
         user = new()
         {
             Identifier = dto.Identifier,
             Name = dto.Name,
             TaxNumber = dto.TaxNumber,
             BirthDate = dto.BirthDate,
-            //DriverLicenseNumber = dto.DriverLicenseNumber,
-            //DriverLicenseType = dto.DriverLicenseType,
+            DriverLicenseNumber = dto.DriverLicenseNumber,
+            DriverLicenseType = dto.DriverLicenseType,
             //DriverLicenseImage = dto.DriverLicenseImage,
             Role = UserRole.Courier,
-            PasswordHash = string.Empty,
         };
 
         await userRepository.AddAsync(user, cancellationToken);
@@ -59,8 +72,8 @@ public class RegisterCourierUseCase(IUserRepository userRepository) : IRegisterC
             Name = user.Name,
             TaxNumber = user.TaxNumber,
             BirthDate = DateOnly.FromDateTime(user.BirthDate),
-            //DriverLicenseNumber = user.DriverLicenseNumber,
-            //DriverLicenseType = user.DriverLicenseType,
+            DriverLicenseNumber = user.DriverLicenseNumber,
+            DriverLicenseType = user.DriverLicenseType,
             //DriverLicenseImage = user.DriverLicenseImage
         };
 

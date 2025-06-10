@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using MotoHub.Domain.Entities;
+using System.Text.Json.Serialization;
 
 namespace MotoHub.API.Responses;
 
@@ -27,4 +28,7 @@ public class RentDetailsResponse
 
     [JsonPropertyName("data_devolucao")]
     public DateTime? ReturnDate { get; set; }
+
+    [JsonPropertyName("status")]
+    public RentStatus Status { get; set; }
 }
