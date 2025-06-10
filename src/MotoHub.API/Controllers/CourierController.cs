@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MotoHub.API.Requests;
 using MotoHub.Application.DTOs;
 using MotoHub.Application.Interfaces.UseCases.Couriers;
@@ -8,7 +9,7 @@ namespace MotoHub.API.Controllers;
 
 [Route("entregadores")]
 [Tags("Entregadores")]
-public class CourierController(ILogger<CourierController> logger) : ApiControllerBase
+public class CourierController(ILogger<CourierController> logger, IMapper mapper) : ApiControllerBase
 {
     [HttpPost]
     [EndpointSummary("Cadastrar um novo entregador")]
@@ -21,16 +22,7 @@ public class CourierController(ILogger<CourierController> logger) : ApiControlle
     {
         logger.LogInformation("Registering new courier");
 
-        RegisterCourierDto dto = new()
-        {
-            Identifier = registerCourierRequest.Identifier,
-            Name = registerCourierRequest.Name,
-            TaxNumber = registerCourierRequest.TaxNumber,
-            BirthDate = registerCourierRequest.BirthDate,
-            DriverLicenseNumber = registerCourierRequest.DriverLicenseNumber,
-            DriverLicenseType = registerCourierRequest.DriverLicenseType,
-            DriverLicenseImage = registerCourierRequest.DriverLicenseImageBase64
-        };
+        RegisterCourierDto dto = mapper.Map<RegisterCourierDto>(registerCourierRequest);
 
         Result<CourierDto> result = await useCase.ExecuteAsync(dto, cancellationToken);
 
@@ -50,10 +42,7 @@ public class CourierController(ILogger<CourierController> logger) : ApiControlle
     {
         logger.LogInformation("Updating courier with identifier: {Identifier}", id);
 
-        UpdateCourierDto dto = new()
-        {
-            DriverLicenseImageBase64 = updateCourierRequest.DriverLicenseImageBase64,
-        };
+        UpdateCourierDto dto = mapper.Map<UpdateCourierDto>(updateCourierRequest);        
 
         Result<CourierDto> result = await useCase.ExecuteAsync(id, dto, cancellationToken);
 

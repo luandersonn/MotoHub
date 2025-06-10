@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MotoHub.API.Extensions;
 using MotoHub.API.Requests;
 using MotoHub.API.Responses;
@@ -10,7 +11,7 @@ namespace MotoHub.API.Controllers;
 
 [Route("locacao")]
 [Tags("Locação")]
-public class RentingController(ILogger<RentingController> logger) : ApiControllerBase
+public class RentingController(IMapper mapper, ILogger<RentingController> logger) : ApiControllerBase
 {
     [HttpPost]
     [EndpointSummary("Alugar uma moto")]
@@ -23,26 +24,10 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
     {
         logger.LogInformation("Registering new motorcycle rent");
 
-        RentMotorcycleDto dto = new()
-        {
-            Identifier = rentMotorcycleRequest.Identifier,
-            CourierIdentifier = rentMotorcycleRequest.CourierIdentifier,
-            MotorcycleIdentifier = rentMotorcycleRequest.MotorcycleIdentifier,
-            Plan = rentMotorcycleRequest.Plan,
-        };
+        RentMotorcycleDto dto = mapper.Map<RentMotorcycleDto>(rentMotorcycleRequest);
 
         Result<RentDetailsResponse> result = await useCase.ExecuteAsync(dto, cancellationToken)
-                                                          .MapResultTo(r => new RentDetailsResponse
-                                                          {
-                                                              Identifier = r.Identifier,
-                                                              MotorcycleIdentifier = r.MotorcycleIdentifier,
-                                                              CourierIdentifier = r.CourierIdentifier,
-                                                              StartDate = r.StartDate,
-                                                              EndDate = r.EndDate,
-                                                              EstimatedEndDate = r.EstimatedEndDate,
-                                                              DailyRate = r.DailyRate,
-                                                              Status = r.Status,
-                                                          });
+                                                          .MapResultTo(mapper.Map<RentDetailsResponse>);
 
         return result.IsSuccess ? Created($"{Request.Path}/{result.Value!.Identifier}", result.Value) : HandleError(result);
     }
@@ -59,18 +44,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
         logger.LogInformation("Fetching rent details for ID: {Id}", id);
 
         Result<RentDetailsResponse> result = await useCase.ExecuteAsync(id, cancellationToken)
-                                                          .MapResultTo(r => new RentDetailsResponse
-                                                          {
-                                                              Identifier = r.Identifier,
-                                                              MotorcycleIdentifier = r.MotorcycleIdentifier,
-                                                              CourierIdentifier = r.CourierIdentifier,
-                                                              StartDate = r.StartDate,
-                                                              EndDate = r.EndDate,
-                                                              EstimatedEndDate = r.EstimatedEndDate,
-                                                              DailyRate = r.DailyRate,
-                                                              ReturnDate = r.EndDate,
-                                                              Status = r.Status,
-                                                          });
+                                                          .MapResultTo(mapper.Map<RentDetailsResponse>);
 
         return HandleResult(result);
     }
@@ -95,16 +69,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
         };
 
         Result<CompletedRentalResponse> result = await useCase.ExecuteAsync(dto, cancellationToken)
-                                                              .MapResultTo(x => new CompletedRentalResponse
-                                                              {
-                                                                  Identifier = x.Identifier,
-                                                                  MotorcycleIdentifier = x.MotorcycleIdentifier,
-                                                                  CourierIdentifier = x.CourierIdentifier,
-                                                                  StartDate = x.StartDate,
-                                                                  EndDate = x.EndDate,
-                                                                  TotalCost = x.TotalCost,
-                                                                  Status = x.Status,
-                                                              });
+                                                              .MapResultTo(mapper.Map<CompletedRentalResponse>);
 
         return HandleResult(result);
     }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MotoHub.API.Extensions;
 using MotoHub.API.Requests;
@@ -10,7 +11,7 @@ namespace MotoHub.API.Controllers;
 
 [Route("motos")]
 [Tags("Motos")]
-public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiControllerBase
+public class MotorcyclesController(IMapper mapper, ILogger<MotorcyclesController> logger) : ApiControllerBase
 {
     [HttpPost]
     [EndpointSummary("Cadastrar uma nova moto")]
@@ -23,13 +24,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     {
         logger.LogInformation("Registering new motorcycle");
 
-        RegisterMotorcycleDto dto = new()
-        {
-            Identifier = registerMotorcycleRequest.Identifier,
-            Model = registerMotorcycleRequest.Model,
-            Plate = registerMotorcycleRequest.Plate,
-            Year = registerMotorcycleRequest.Year,
-        };
+        RegisterMotorcycleDto dto = mapper.Map<RegisterMotorcycleDto>(registerMotorcycleRequest);
 
         Result<MotorcycleDto> result = await useCase.ExecuteAsync(dto, cancellationToken);
 
@@ -39,7 +34,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     [HttpGet]
     [EndpointSummary("Consultar motos existentes")]
     [EndpointDescription("Consulta e retorna as motos existentes através da placa")]
-    [ProducesResponseType(typeof(IEnumerable<MotorcycleDto>), StatusCodes.Status200OK, "application/json")]
+    [ProducesResponseType(typeof(IEnumerable<MotorcycleResponse>), StatusCodes.Status200OK, "application/json")]
     public async Task<IActionResult> SearchAsync([FromServices] ISearchMotorcyclesUseCase useCase,
                                                  [FromQuery(Name = "placa")] string? plate,
                                                  CancellationToken cancellationToken)
@@ -54,14 +49,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
         };
 
         Result<List<MotorcycleResponse>> result = await useCase.ExecuteAsync(queryDTO, cancellationToken)
-                                                               .MapResultTo((MotorcycleDto m) => new MotorcycleResponse
-                                                               {
-                                                                   Identifier = m.Identifier,
-                                                                   Model = m.Model,
-                                                                   Plate = m.Plate,
-                                                                   Year = m.Year,
-                                                               });
-
+                                                               .MapResultTo((MotorcycleDto m) => mapper.Map<MotorcycleResponse>(m));
         return HandleResult(result);
     }
 
@@ -78,10 +66,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
     {
         logger.LogInformation("Updating motorcycle with identifier: {Identifier}", id);
 
-        UpdateMotorcycleDto dto = new()
-        {
-            Plate = updateMotorcycleRequest.Plate,
-        };
+        UpdateMotorcycleDto dto = mapper.Map<UpdateMotorcycleDto>(updateMotorcycleRequest);
 
         Result<MotorcycleDto> result = await useCase.ExecuteAsync(id, dto, cancellationToken);
 
@@ -104,13 +89,7 @@ public class MotorcyclesController(ILogger<MotorcyclesController> logger) : ApiC
         logger.LogInformation("Fetching motorcycle by identifier");
 
         Result<MotorcycleResponse> result = await useCase.ExecuteAsync(id, cancellationToken)
-                                                         .MapResultTo(x => new MotorcycleResponse
-                                                         {
-                                                             Identifier = x.Identifier,
-                                                             Model = x.Model,
-                                                             Plate = x.Plate,
-                                                             Year = x.Year,
-                                                         });
+                                                         .MapResultTo(mapper.Map<MotorcycleResponse>);
 
         return HandleResult(result);
     }
