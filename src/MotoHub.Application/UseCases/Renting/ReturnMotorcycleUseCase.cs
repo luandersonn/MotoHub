@@ -34,7 +34,7 @@ public class ReturnMotorcycleUseCase(IRentRepository rentRepository, IRentPricin
         {
             Identifier = rent.Identifier,
             MotorcycleIdentifier = rent.MotorcycleIdentifier,
-            TenantIdentifier = rent.TenantIdentifier,
+            CourierIdentifier = rent.CourierIdentifier,
             StartDate = rent.StartDate,
             EndDate = rent.EndDate.Value,
             TotalCost = totalCost,

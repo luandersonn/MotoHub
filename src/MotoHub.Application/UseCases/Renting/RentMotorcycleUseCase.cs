@@ -27,7 +27,7 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
             }
         }
 
-        if (string.IsNullOrWhiteSpace(dto.TenantIdentifier))
+        if (string.IsNullOrWhiteSpace(dto.CourierIdentifier))
         {
             return Result<RentDto>.Failure("Identificador do locatário inválido", ResultErrorType.ValidationError);
         }
@@ -51,14 +51,14 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
             return Result<RentDto>.Failure("Moto não encontrada", ResultErrorType.NotFound);
         }
 
-        User? tenant = await userRepository.GetByIdentifierAsync(dto.TenantIdentifier, cancellationToken);
+        User? courier = await userRepository.GetByIdentifierAsync(dto.CourierIdentifier, cancellationToken);
 
-        if (tenant is null)
+        if (courier is null)
         {
-            return Result<RentDto>.Failure("Usuário locatário não encontrado", ResultErrorType.NotFound);
+            return Result<RentDto>.Failure("Entregador com identificador informado não encontrado", ResultErrorType.NotFound);
         }
 
-        if (tenant.DriverLicenseType is not DriverLicenseType.A and not DriverLicenseType.AB)
+        if (courier.DriverLicenseType is not DriverLicenseType.A and not DriverLicenseType.AB)
         {
             return Result<RentDto>.Failure("O entregador não tem o tipo de licença A para realizar o aluguel", ResultErrorType.BusinessError);
         }
@@ -77,7 +77,7 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
         {
             Identifier = dto.Identifier,
             MotorcycleIdentifier = dto.MotorcycleIdentifier,
-            TenantIdentifier = dto.TenantIdentifier,
+            CourierIdentifier = dto.CourierIdentifier,
             StartDate = startDate,
             EndDate = null,
             EstimatedEndDate = estimatedEndDate,
@@ -93,7 +93,7 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
         {
             Identifier = rent.Identifier,
             MotorcycleIdentifier = rent.MotorcycleIdentifier,
-            TenantIdentifier = rent.TenantIdentifier,
+            CourierIdentifier = rent.CourierIdentifier,
             StartDate = rent.StartDate,
             EndDate = rent.EndDate,
             EstimatedEndDate = rent.EstimatedEndDate,

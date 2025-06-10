@@ -8,7 +8,7 @@ public class RentMotorcycleRequest
     public string? Identifier { get; set; }
 
     [JsonPropertyName("entregador_id")]
-    public string TenantIdentifier { get; set; }
+    public string CourierIdentifier { get; set; }
 
     [JsonPropertyName("moto_id")]
     public string MotorcycleIdentifier { get; set; }

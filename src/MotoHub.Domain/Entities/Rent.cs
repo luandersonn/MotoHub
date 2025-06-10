@@ -2,7 +2,7 @@
 
 public class Rent : Entity
 {
-    public string TenantIdentifier { get; set; }
+    public string CourierIdentifier { get; set; }
     public string MotorcycleIdentifier { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime? EndDate { get; set; }

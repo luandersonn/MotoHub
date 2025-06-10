@@ -26,7 +26,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
         RentMotorcycleDto dto = new()
         {
             Identifier = rentMotorcycleRequest.Identifier,
-            TenantIdentifier = rentMotorcycleRequest.TenantIdentifier,
+            CourierIdentifier = rentMotorcycleRequest.CourierIdentifier,
             MotorcycleIdentifier = rentMotorcycleRequest.MotorcycleIdentifier,
             Plan = rentMotorcycleRequest.Plan,
         };
@@ -36,7 +36,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
                                                           {
                                                               Identifier = r.Identifier,
                                                               MotorcycleIdentifier = r.MotorcycleIdentifier,
-                                                              TenantIdentifier = r.TenantIdentifier,
+                                                              CourierIdentifier = r.CourierIdentifier,
                                                               StartDate = r.StartDate,
                                                               EndDate = r.EndDate,
                                                               EstimatedEndDate = r.EstimatedEndDate,
@@ -63,7 +63,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
                                                           {
                                                               Identifier = r.Identifier,
                                                               MotorcycleIdentifier = r.MotorcycleIdentifier,
-                                                              TenantIdentifier = r.TenantIdentifier,
+                                                              CourierIdentifier = r.CourierIdentifier,
                                                               StartDate = r.StartDate,
                                                               EndDate = r.EndDate,
                                                               EstimatedEndDate = r.EstimatedEndDate,
@@ -99,7 +99,7 @@ public class RentingController(ILogger<RentingController> logger) : ApiControlle
                                                               {
                                                                   Identifier = x.Identifier,
                                                                   MotorcycleIdentifier = x.MotorcycleIdentifier,
-                                                                  TenantIdentifier = x.TenantIdentifier,
+                                                                  CourierIdentifier = x.CourierIdentifier,
                                                                   StartDate = x.StartDate,
                                                                   EndDate = x.EndDate,
                                                                   TotalCost = x.TotalCost,

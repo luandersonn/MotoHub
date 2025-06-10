@@ -12,7 +12,7 @@ public class RentDetailsResponse
     public decimal DailyRate { get; set; }
 
     [JsonPropertyName("entregador_id")]
-    public required string TenantIdentifier { get; set; }
+    public required string CourierIdentifier { get; set; }
 
     [JsonPropertyName("moto_id")]
     public required string MotorcycleIdentifier { get; set; }

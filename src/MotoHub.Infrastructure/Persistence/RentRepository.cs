@@ -23,11 +23,11 @@ public class RentRepository(AppDbContext context) : RepositoryBase<Rent>(context
                     .ToListAsync(cancellationToken);
     }
 
-    public Task<List<Rent>> GetRentsByTenantAsync(string tenantIdentifier, CancellationToken cancellationToken)
+    public Task<List<Rent>> GetRentsByCourierAsync(string courierIdentifier, CancellationToken cancellationToken)
     {
         return DbSet.AsNoTracking()
                     .Where(e => e.DeletedAt == null)
-                    .Where(e => e.TenantIdentifier == tenantIdentifier)
+                    .Where(e => e.CourierIdentifier == courierIdentifier)
                     .ToListAsync(cancellationToken);
     }
 

@@ -12,7 +12,7 @@ public class CompletedRentalResponse
     public string MotorcycleIdentifier { get; set; }
 
     [JsonPropertyName("identificador_entregador")]
-    public string TenantIdentifier { get; set; }
+    public string CourierIdentifier { get; set; }
 
     [JsonPropertyName("data_inicio")]
     public DateTime StartDate { get; set; }

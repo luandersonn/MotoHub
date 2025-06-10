@@ -6,7 +6,7 @@ public class CompletedRentalDto
 {
     public required string Identifier { get; set; }
     public required string MotorcycleIdentifier { get; set; }
-    public required string TenantIdentifier { get; set; }
+    public required string CourierIdentifier { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
     public decimal TotalCost { get; set; }

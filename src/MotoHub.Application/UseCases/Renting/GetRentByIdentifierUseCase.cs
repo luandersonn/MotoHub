@@ -21,7 +21,7 @@ public class GetRentByIdentifierUseCase(IRentRepository rentRepository) : IGetRe
         {
             Identifier = rent.Identifier,
             MotorcycleIdentifier = rent.MotorcycleIdentifier,
-            TenantIdentifier = rent.TenantIdentifier,
+            CourierIdentifier = rent.CourierIdentifier,
             StartDate = rent.StartDate,
             EndDate = rent.EndDate,
             EstimatedEndDate = rent.EstimatedEndDate,
