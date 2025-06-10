@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotoHub.Domain.Interfaces;
+using MotoHub.Infrastructure.Persistence;
 
-namespace MotoHub.Infrastructure.Persistence;
+namespace MotoHub.Infrastructure.Repositories;
 
 public class RepositoryBase<T> : IRepository<T> where T : class, IEntity
 {

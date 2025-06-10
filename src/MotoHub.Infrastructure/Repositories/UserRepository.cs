@@ -3,8 +3,9 @@ using MotoHub.Application.DTOs;
 using MotoHub.Application.Interfaces;
 using MotoHub.Domain.Entities;
 using MotoHub.Domain.ValueObjects;
+using MotoHub.Infrastructure.Persistence;
 
-namespace MotoHub.Infrastructure.Persistence;
+namespace MotoHub.Infrastructure.Repositories;
 
 public class UserRepository(AppDbContext context) : RepositoryBase<User>(context), IUserRepository
 {

@@ -7,6 +7,7 @@ using MotoHub.Application.Interfaces;
 using MotoHub.Application.Interfaces.Messaging;
 using MotoHub.Infrastructure.Messaging;
 using MotoHub.Infrastructure.Persistence;
+using MotoHub.Infrastructure.Repositories;
 
 namespace MotoHub.API.Extensions;
 

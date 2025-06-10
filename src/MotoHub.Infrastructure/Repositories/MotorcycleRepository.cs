@@ -2,8 +2,9 @@
 using MotoHub.Application.DTOs;
 using MotoHub.Application.Interfaces;
 using MotoHub.Domain.Entities;
+using MotoHub.Infrastructure.Persistence;
 
-namespace MotoHub.Infrastructure.Persistence;
+namespace MotoHub.Infrastructure.Repositories;
 
 public class MotorcycleRepository(AppDbContext context) : RepositoryBase<Motorcycle>(context), IMotorcycleRepository
 {

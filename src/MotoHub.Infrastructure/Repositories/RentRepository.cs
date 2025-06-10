@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotoHub.Application.Interfaces;
 using MotoHub.Domain.Entities;
+using MotoHub.Infrastructure.Persistence;
 
-namespace MotoHub.Infrastructure.Persistence;
+namespace MotoHub.Infrastructure.Repositories;
 
 public class RentRepository(AppDbContext context) : RepositoryBase<Rent>(context), IRentRepository
 {
