@@ -70,7 +70,7 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
             return Result<RentDto>.Failure("Esta moto já está alugada", ResultErrorType.BusinessError);
         }
 
-        DateTime startDate = DateTime.Now.AddDays(-4).AddDays(1).Date;
+        DateTime startDate = DateTime.Now.AddDays(1).Date;
         DateTime estimatedEndDate = startDate.AddDays(plan.DurationInDays).Date;
 
         Rent rent = new()
