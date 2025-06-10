@@ -10,5 +10,5 @@ public class CourierDto
     public DateOnly BirthDate { get; set; }
     public string? DriverLicenseNumber { get; set; }
     public DriverLicenseType? DriverLicenseType { get; set; }
-    public string? DriverLicenseImage { get; set; }
+    public string? DriverLicenseImageBase64 { get; set; }
 }

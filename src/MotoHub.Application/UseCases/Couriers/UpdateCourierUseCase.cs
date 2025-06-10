@@ -1,12 +1,12 @@
 ﻿using MotoHub.Application.DTOs;
-using MotoHub.Application.Interfaces;
+using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Application.Interfaces.UseCases.Couriers;
 using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;
 
 namespace MotoHub.Application.UseCases.Couriers;
 
-public class UpdateCourierUseCase(IUserRepository userRepository) : IUpdateCourierUseCase
+public class UpdateCourierUseCase(IUserRepository userRepository, IImageRepository imageStorage) : IUpdateCourierUseCase
 {
     public async Task<Result<CourierDto>> ExecuteAsync(string identifier, UpdateCourierDto dto, CancellationToken cancellationToken = default)
     {
@@ -49,7 +49,8 @@ public class UpdateCourierUseCase(IUserRepository userRepository) : IUpdateCouri
 
         if (!string.IsNullOrWhiteSpace(dto.DriverLicenseImageBase64))
         {
-            //user.DriverLicenseImage = dto.DriverLicenseImageBase64;
+            await imageStorage.RemoveAsync(user.DriverLicenseImageIdentifier, cancellationToken);
+            user.DriverLicenseImageIdentifier = await imageStorage.UploadImageAsBase64Async(dto.DriverLicenseImageBase64, cancellationToken);
         }
 
         user.UpdatedAt = DateTime.UtcNow;
@@ -64,7 +65,7 @@ public class UpdateCourierUseCase(IUserRepository userRepository) : IUpdateCouri
             BirthDate = DateOnly.FromDateTime(user.BirthDate),
             DriverLicenseNumber = user.DriverLicenseNumber,
             DriverLicenseType = user.DriverLicenseType,
-            //DriverLicenseImage = user.DriverLicenseImage
+            DriverLicenseImageBase64 = dto.DriverLicenseImageBase64,
         };
 
         return Result<CourierDto>.Success(resultDto);

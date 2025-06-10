@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MotoHub.Application.Interfaces;
+using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Domain.Entities;
 using MotoHub.Infrastructure.Persistence;
 

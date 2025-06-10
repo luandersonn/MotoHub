@@ -3,8 +3,9 @@ using Amazon.Runtime;
 using Amazon.SQS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MotoHub.Application.Interfaces;
+using MongoDB.Driver;
 using MotoHub.Application.Interfaces.Messaging;
+using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Infrastructure.Messaging;
 using MotoHub.Infrastructure.Persistence;
 using MotoHub.Infrastructure.Repositories;
@@ -35,6 +36,19 @@ public static class InfrastructureExtensions
 
         services.AddSingleton<IMotorcycleEventPublisher, AwsSQSMotorcycleEventPublisher>();
 
+        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
+
+        services.AddSingleton(sp =>
+        {
+            MongoDbSettings mongoDbSettings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+
+            MongoClientSettings clientSettings = MongoClientSettings.FromConnectionString(mongoDbSettings.ConnectionString);
+
+            MongoClient mongoClient = new(clientSettings);
+
+            return mongoClient.GetDatabase(mongoDbSettings.Database);
+        });
+
         services.AddRepositories();
 
         return services;
@@ -45,6 +59,7 @@ public static class InfrastructureExtensions
         services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRentRepository, RentRepository>();
+        services.AddScoped<IImageRepository, MongoDbImageRepository>();
 
         return services;
     }

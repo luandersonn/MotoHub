@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MotoHub.Application.DTOs;
-using MotoHub.Application.Interfaces;
+using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Domain.Entities;
 using MotoHub.Domain.ValueObjects;
 using MotoHub.Infrastructure.Persistence;

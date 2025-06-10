@@ -2,7 +2,7 @@
 using MotoHub.Domain.Entities;
 using MotoHub.Domain.Interfaces;
 
-namespace MotoHub.Application.Interfaces;
+namespace MotoHub.Application.Interfaces.Repositories;
 
 public interface IMotorcycleRepository : IRepository<Motorcycle>
 {

@@ -3,7 +3,7 @@ using MotoHub.Domain.Entities;
 using MotoHub.Domain.Interfaces;
 using MotoHub.Domain.ValueObjects;
 
-namespace MotoHub.Application.Interfaces;
+namespace MotoHub.Application.Interfaces.Repositories;
 
 public interface IUserRepository : IRepository<User>
 {

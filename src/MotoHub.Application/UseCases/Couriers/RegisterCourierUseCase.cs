@@ -1,5 +1,5 @@
 ﻿using MotoHub.Application.DTOs;
-using MotoHub.Application.Interfaces;
+using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Application.Interfaces.UseCases.Couriers;
 using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;
@@ -7,7 +7,7 @@ using MotoHub.Domain.ValueObjects;
 
 namespace MotoHub.Application.UseCases.Couriers;
 
-public class RegisterCourierUseCase(IUserRepository userRepository) : IRegisterCourierUseCase
+public class RegisterCourierUseCase(IUserRepository userRepository, IImageRepository imageStorage) : IRegisterCourierUseCase
 {
     public async Task<Result<CourierDto>> ExecuteAsync(RegisterCourierDto dto, CancellationToken cancellationToken = default)
     {
@@ -52,6 +52,8 @@ public class RegisterCourierUseCase(IUserRepository userRepository) : IRegisterC
             return Result<CourierDto>.Failure("Já existe um usuário com esta CNH", ResultErrorType.BusinessError);
         }
 
+        string imageIdentifier = await imageStorage.UploadImageAsBase64Async(dto.DriverLicenseImageBase64, cancellationToken);
+
         user = new()
         {
             Identifier = dto.Identifier,
@@ -60,7 +62,7 @@ public class RegisterCourierUseCase(IUserRepository userRepository) : IRegisterC
             BirthDate = dto.BirthDate,
             DriverLicenseNumber = dto.DriverLicenseNumber,
             DriverLicenseType = dto.DriverLicenseType,
-            //DriverLicenseImage = dto.DriverLicenseImage,
+            DriverLicenseImageIdentifier = imageIdentifier,
             Role = UserRole.Courier,
         };
 

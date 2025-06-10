@@ -10,4 +10,5 @@ public class User : Entity
     public DriverLicenseType? DriverLicenseType { get; set; }
     public UserRole Role { get; set; }
     public DateTime BirthDate { get; set; }
+    public string DriverLicenseImageIdentifier { get; set; }
 }

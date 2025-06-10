@@ -10,5 +10,5 @@ public class RegisterCourierDto
     public required DateTime BirthDate { get; set; }
     public required string DriverLicenseNumber { get; set; }
     public required DriverLicenseType DriverLicenseType { get; set; }
-    public required string DriverLicenseImage { get; set; }
+    public required string DriverLicenseImageBase64 { get; set; }
 }

@@ -1,5 +1,5 @@
 ﻿using MotoHub.Application.DTOs;
-using MotoHub.Application.Interfaces;
+using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Application.Interfaces.UseCases.Renting;
 using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;

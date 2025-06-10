@@ -1,7 +1,7 @@
 ﻿using MotoHub.Application.DTOs;
 using MotoHub.Application.Events;
-using MotoHub.Application.Interfaces;
 using MotoHub.Application.Interfaces.Messaging;
+using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Application.Interfaces.UseCases.Motorcycles;
 using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;

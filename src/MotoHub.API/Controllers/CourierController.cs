@@ -42,7 +42,7 @@ public class CourierController(ILogger<CourierController> logger, IMapper mapper
     {
         logger.LogInformation("Updating courier with identifier: {Identifier}", id);
 
-        UpdateCourierDto dto = mapper.Map<UpdateCourierDto>(updateCourierRequest);        
+        UpdateCourierDto dto = mapper.Map<UpdateCourierDto>(updateCourierRequest);
 
         Result<CourierDto> result = await useCase.ExecuteAsync(id, dto, cancellationToken);
 
