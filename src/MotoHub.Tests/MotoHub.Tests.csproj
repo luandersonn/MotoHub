@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MotoHub.Application\MotoHub.Application.csproj" />
     <ProjectReference Include="..\MotoHub.Domain\MotoHub.Domain.csproj" />
+    <ProjectReference Include="..\MotoHub.Infrastructure\MotoHub.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
