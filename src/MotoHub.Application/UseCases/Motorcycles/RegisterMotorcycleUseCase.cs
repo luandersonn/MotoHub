@@ -1,12 +1,14 @@
 ﻿using MotoHub.Application.DTOs;
+using MotoHub.Application.Events;
 using MotoHub.Application.Interfaces;
+using MotoHub.Application.Interfaces.Messaging;
 using MotoHub.Application.Interfaces.UseCases.Motorcycles;
 using MotoHub.Domain.Common;
 using MotoHub.Domain.Entities;
 
 namespace MotoHub.Application.UseCases.Motorcycles;
 
-public class RegisterMotorcycleUseCase(IMotorcycleRepository motorcycleRepository) : IRegisterMotorcycleUseCase
+public class RegisterMotorcycleUseCase(IMotorcycleRepository motorcycleRepository, IMotorcycleEventPublisher eventPublisher) : IRegisterMotorcycleUseCase
 {
     public async Task<Result<MotorcycleDto>> ExecuteAsync(RegisterMotorcycleDto dto, CancellationToken cancellationToken = default)
     {
@@ -43,6 +45,11 @@ public class RegisterMotorcycleUseCase(IMotorcycleRepository motorcycleRepositor
         };
 
         await motorcycleRepository.AddAsync(motorcycle, cancellationToken);
+
+        await eventPublisher.PublishMotorcycleRegisteredAsync(new MotorcycleRegisteredEvent(motorcycle.Identifier,
+                                                                                            motorcycle.Plate,
+                                                                                            motorcycle.Year,
+                                                                                            motorcycle.Model), cancellationToken);
 
         MotorcycleDto resultDto = new()
         {

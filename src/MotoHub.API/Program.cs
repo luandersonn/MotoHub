@@ -16,7 +16,7 @@ builder.Services.AddControllers()
                  });
 
 builder.Services.AddApplicationLayer(builder.Configuration);
-builder.Services.AddInfrastructureLayer();
+builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
