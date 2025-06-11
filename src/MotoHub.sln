@@ -3,15 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36202.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.API", "MotoHub.API\MotoHub.API.csproj", "{7A7D05F8-8D39-4A52-821E-203F258772F3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Domain", "MotoHub.Domain\MotoHub.Domain.csproj", "{D486E422-EE8E-4382-8A27-5CFE53DA28C8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{7CA8911D-2743-4160-8BBC-DFBAD3099D93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Application", "MotoHub.Application\MotoHub.Application.csproj", "{A4472F26-4E57-40D0-AEB1-2B53DC57CC40}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1B640A10-E016-4B05-84E7-F398611DAD73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Infrastructure", "MotoHub.Infrastructure\MotoHub.Infrastructure.csproj", "{D649DFA1-696E-4312-8CD5-05690DEF881A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Tests", "Tests\MotoHub.Tests\MotoHub.Tests.csproj", "{B49F5C3B-4287-BBFD-BD35-BE5EE74D2998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Tests", "MotoHub.Tests\MotoHub.Tests.csproj", "{CF81B4A6-298C-41BD-B62F-F1D8A9B976E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.API", "API\MotoHub.API\MotoHub.API.csproj", "{953394B1-DD2E-EF4C-FDD9-74E1B62915AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Application", "API\MotoHub.Application\MotoHub.Application.csproj", "{24A08273-4B24-CA5F-30BB-2EA6BF810E46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Domain", "API\MotoHub.Domain\MotoHub.Domain.csproj", "{953B548A-C735-CB10-9237-57FBCF7BB560}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Infrastructure", "API\MotoHub.Infrastructure\MotoHub.Infrastructure.csproj", "{8DF509D9-8CE5-2048-0624-1D1B690C824B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,29 +25,36 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7A7D05F8-8D39-4A52-821E-203F258772F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A7D05F8-8D39-4A52-821E-203F258772F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A7D05F8-8D39-4A52-821E-203F258772F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A7D05F8-8D39-4A52-821E-203F258772F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D486E422-EE8E-4382-8A27-5CFE53DA28C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D486E422-EE8E-4382-8A27-5CFE53DA28C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D486E422-EE8E-4382-8A27-5CFE53DA28C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D486E422-EE8E-4382-8A27-5CFE53DA28C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4472F26-4E57-40D0-AEB1-2B53DC57CC40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4472F26-4E57-40D0-AEB1-2B53DC57CC40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4472F26-4E57-40D0-AEB1-2B53DC57CC40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4472F26-4E57-40D0-AEB1-2B53DC57CC40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D649DFA1-696E-4312-8CD5-05690DEF881A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D649DFA1-696E-4312-8CD5-05690DEF881A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D649DFA1-696E-4312-8CD5-05690DEF881A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D649DFA1-696E-4312-8CD5-05690DEF881A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF81B4A6-298C-41BD-B62F-F1D8A9B976E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF81B4A6-298C-41BD-B62F-F1D8A9B976E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF81B4A6-298C-41BD-B62F-F1D8A9B976E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF81B4A6-298C-41BD-B62F-F1D8A9B976E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B49F5C3B-4287-BBFD-BD35-BE5EE74D2998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B49F5C3B-4287-BBFD-BD35-BE5EE74D2998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B49F5C3B-4287-BBFD-BD35-BE5EE74D2998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B49F5C3B-4287-BBFD-BD35-BE5EE74D2998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953394B1-DD2E-EF4C-FDD9-74E1B62915AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953394B1-DD2E-EF4C-FDD9-74E1B62915AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953394B1-DD2E-EF4C-FDD9-74E1B62915AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953394B1-DD2E-EF4C-FDD9-74E1B62915AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24A08273-4B24-CA5F-30BB-2EA6BF810E46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24A08273-4B24-CA5F-30BB-2EA6BF810E46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24A08273-4B24-CA5F-30BB-2EA6BF810E46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24A08273-4B24-CA5F-30BB-2EA6BF810E46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953B548A-C735-CB10-9237-57FBCF7BB560}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953B548A-C735-CB10-9237-57FBCF7BB560}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953B548A-C735-CB10-9237-57FBCF7BB560}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953B548A-C735-CB10-9237-57FBCF7BB560}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DF509D9-8CE5-2048-0624-1D1B690C824B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DF509D9-8CE5-2048-0624-1D1B690C824B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DF509D9-8CE5-2048-0624-1D1B690C824B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF509D9-8CE5-2048-0624-1D1B690C824B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B49F5C3B-4287-BBFD-BD35-BE5EE74D2998} = {1B640A10-E016-4B05-84E7-F398611DAD73}
+		{953394B1-DD2E-EF4C-FDD9-74E1B62915AC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{24A08273-4B24-CA5F-30BB-2EA6BF810E46} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{953B548A-C735-CB10-9237-57FBCF7BB560} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{8DF509D9-8CE5-2048-0624-1D1B690C824B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A787D6A8-F3D3-4A18-A486-E0A48D87A7C3}
