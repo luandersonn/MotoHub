@@ -41,7 +41,6 @@ app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 
-
 app.EnsureDatabaseCreated();
 
 app.Run();

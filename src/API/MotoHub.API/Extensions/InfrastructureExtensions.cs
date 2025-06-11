@@ -27,14 +27,20 @@ public static class InfrastructureExtensions
         services.UseMongoDbAsDatabase(configuration);
         services.UseSQSAsMessageQueue(configuration);
 
-        bool useS3AsImageStorage = configuration.GetSection("UseS3AsImageStorage").Get<bool>();
-        if (useS3AsImageStorage)
+        string? imageStorageService = configuration.GetSection("imageStorageService").Get<string>();
+
+        switch (imageStorageService)
         {
-            services.UseS3AsImageStorage(configuration);
-        }
-        else
-        {
-            services.UseMongoAsImageStorage(configuration);
+            case "mongodb":
+                services.UseMongoAsImageStorage(configuration);
+                break;
+
+            case "s3":
+                services.UseS3AsImageStorage(configuration);
+                break;
+
+            default:
+                throw new ArgumentException($"Unsupported image storage service: {imageStorageService}");
         }
 
         return services;
@@ -145,8 +151,8 @@ public static class InfrastructureExtensions
 
     public static void EnsureDatabaseCreated(this IHost app)
     {
-        //using IServiceScope scope = app.Services.CreateScope();
-        //AppDbContext context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        //context.Database.EnsureCreated();
+        using IServiceScope scope = app.Services.CreateScope();
+        AppDbContext context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.Database.EnsureCreated();
     }
 }
