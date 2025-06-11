@@ -20,16 +20,14 @@ public static class InfrastructureExtensions
 {
     public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(static options => options.UseSqlite("Data Source=motohub.db"));
         services.AddScoped<IMotorcycleRepository, MotorcycleRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRentRepository, RentRepository>();
 
+        services.UseMongoDbAsDatabase(configuration);
         services.UseSQSAsMessageQueue(configuration);
 
-        bool useS3AsImageStorage = configuration.GetSection("UseS3AsImageStorage")
-                                                .Get<bool>();
-
+        bool useS3AsImageStorage = configuration.GetSection("UseS3AsImageStorage").Get<bool>();
         if (useS3AsImageStorage)
         {
             services.UseS3AsImageStorage(configuration);
@@ -38,6 +36,27 @@ public static class InfrastructureExtensions
         {
             services.UseMongoAsImageStorage(configuration);
         }
+
+        return services;
+    }
+
+    private static IServiceCollection UseMongoDbAsDatabase(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.RegisterMongoDb(configuration);
+
+        MongoDbSettings mongoDbSettings = configuration.GetRequiredSection("MongoDbSettings")
+                                                       .Get<MongoDbSettings>()
+                                                       ?? throw new Exception("MongoDbSettings not configured in appsettings.json");
+
+        services.AddDbContext<AppDbContext>((sp, options) => options.UseMongoDB(sp.GetRequiredService<IMongoClient>(), mongoDbSettings.Database));
+
+        return services;
+    }
+
+    // Para fins de debug
+    private static IServiceCollection UseSqlLiteAsDatabase(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<AppDbContext>(static options => options.UseSqlite("Data Source=motohub.db"));
 
         return services;
     }
@@ -67,25 +86,39 @@ public static class InfrastructureExtensions
 
     private static IServiceCollection UseMongoAsImageStorage(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
-
-        services.AddSingleton(sp =>
-        {
-            MongoDbSettings mongoDbSettings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-
-            MongoClientSettings clientSettings = MongoClientSettings.FromConnectionString(mongoDbSettings.ConnectionString);
-
-            MongoClient mongoClient = new(clientSettings);
-
-            return mongoClient.GetDatabase(mongoDbSettings.Database);
-        });
+        services.RegisterMongoDb(configuration);
 
         services.AddScoped<IImageStorage, MongoDbImageStorage>();
 
         return services;
     }
 
- 
+    private static IServiceCollection RegisterMongoDb(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
+
+        services.AddSingleton<IMongoClient>(sp =>
+        {
+            MongoDbSettings mongoDbSettings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+            MongoClientSettings clientSettings = MongoClientSettings.FromConnectionString(mongoDbSettings.ConnectionString);
+
+            MongoClient mongoClient = new(clientSettings);
+
+            return new MongoClient(clientSettings);
+        });
+
+        services.AddSingleton(sp =>
+        {
+            IMongoClient mongoClient = sp.GetRequiredService<IMongoClient>();
+
+            MongoDbSettings mongoDbSettings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+
+            return mongoClient.GetDatabase(mongoDbSettings.Database);
+        });
+
+        return services;
+    }
+
 
     private static IServiceCollection UseS3AsImageStorage(this IServiceCollection services, IConfiguration configuration)
     {
@@ -112,8 +145,8 @@ public static class InfrastructureExtensions
 
     public static void EnsureDatabaseCreated(this IHost app)
     {
-        using IServiceScope scope = app.Services.CreateScope();
-        AppDbContext context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.Database.EnsureCreated();
+        //using IServiceScope scope = app.Services.CreateScope();
+        //AppDbContext context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        //context.Database.EnsureCreated();
     }
 }
