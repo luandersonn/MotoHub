@@ -24,7 +24,7 @@ public class GetRentByIdentifierUseCaseTests
     {
         string identifier = "rent-001";
 
-        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _rentRepositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync((Rent?)null);
 
         Result<RentDto> result = await _useCase.ExecuteAsync(identifier);
@@ -44,7 +44,7 @@ public class GetRentByIdentifierUseCaseTests
 
         Rent rent = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             MotorcycleIdentifier = "moto-001",
             CourierIdentifier = "courier-001",
             StartDate = DateTime.UtcNow.AddDays(-3),
@@ -54,7 +54,7 @@ public class GetRentByIdentifierUseCaseTests
             DailyRate = 150.00m
         };
 
-        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _rentRepositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(rent);
 
         Result<RentDto> result = await _useCase.ExecuteAsync(identifier);
@@ -62,7 +62,7 @@ public class GetRentByIdentifierUseCaseTests
         Assert.Multiple(() =>
         {
             Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Data?.Identifier, Is.EqualTo(rent.Identifier));
+            Assert.That(result.Data?.Identifier, Is.EqualTo(rent.Id));
             Assert.That(result.Data?.MotorcycleIdentifier, Is.EqualTo(rent.MotorcycleIdentifier));
             Assert.That(result.Data?.CourierIdentifier, Is.EqualTo(rent.CourierIdentifier));
             Assert.That(result.Data?.StartDate, Is.EqualTo(rent.StartDate));
@@ -72,6 +72,6 @@ public class GetRentByIdentifierUseCaseTests
             Assert.That(result.Data?.DailyRate, Is.EqualTo(rent.DailyRate));
         });
 
-        _rentRepositoryMock.Verify(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()), Times.Once);
+        _rentRepositoryMock.Verify(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()), Times.Once);
     }
 }

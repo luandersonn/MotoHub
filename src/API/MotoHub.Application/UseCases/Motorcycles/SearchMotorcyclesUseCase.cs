@@ -31,7 +31,7 @@ public class SearchMotorcyclesUseCase(IMotorcycleRepository motorcycleRepository
     {
         return new MotorcycleDto
         {
-            Identifier = motorcycle.Identifier,
+            Identifier = motorcycle.Id,
             Year = motorcycle.Year,
             Plate = motorcycle.Plate,
             Model = motorcycle.Model,

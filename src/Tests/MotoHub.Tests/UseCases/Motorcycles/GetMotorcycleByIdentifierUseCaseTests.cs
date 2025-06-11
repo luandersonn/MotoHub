@@ -24,7 +24,7 @@ public class GetMotorcycleByIdentifierUseCaseTests
     {
         string identifier = "123";
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync((Motorcycle?)null);
 
         Result<MotorcycleDto> result = await _useCase.ExecuteAsync(identifier);
@@ -44,13 +44,13 @@ public class GetMotorcycleByIdentifierUseCaseTests
 
         Motorcycle motorcycle = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             Plate = "ABC123",
             Year = 2020,
             Model = "Sport"
         };
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(motorcycle);
 
         Result<MotorcycleDto> result = await _useCase.ExecuteAsync(identifier);
@@ -58,12 +58,12 @@ public class GetMotorcycleByIdentifierUseCaseTests
         Assert.Multiple(() =>
         {
             Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Data?.Identifier, Is.EqualTo(motorcycle.Identifier));
+            Assert.That(result.Data?.Identifier, Is.EqualTo(motorcycle.Id));
             Assert.That(result.Data?.Plate, Is.EqualTo(motorcycle.Plate));
             Assert.That(result.Data?.Year, Is.EqualTo(motorcycle.Year));
             Assert.That(result.Data?.Model, Is.EqualTo(motorcycle.Model));
         });
 
-        _repositoryMock.Verify(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()), Times.Once);
+        _repositoryMock.Verify(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()), Times.Once);
     }
 }

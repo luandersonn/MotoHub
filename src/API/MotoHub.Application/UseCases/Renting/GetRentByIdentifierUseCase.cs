@@ -10,7 +10,7 @@ public class GetRentByIdentifierUseCase(IRentRepository rentRepository) : IGetRe
 {
     public async Task<Result<RentDto>> ExecuteAsync(string identifier, CancellationToken cancellationToken = default)
     {
-        Rent? rent = await rentRepository.GetByIdentifierAsync(identifier, cancellationToken);
+        Rent? rent = await rentRepository.GetByIdAsync(identifier, cancellationToken);
 
         if (rent is null)
         {
@@ -19,7 +19,7 @@ public class GetRentByIdentifierUseCase(IRentRepository rentRepository) : IGetRe
 
         RentDto resultDto = new()
         {
-            Identifier = rent.Identifier,
+            Identifier = rent.Id,
             MotorcycleIdentifier = rent.MotorcycleIdentifier,
             CourierIdentifier = rent.CourierIdentifier,
             StartDate = rent.StartDate,

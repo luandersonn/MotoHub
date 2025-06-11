@@ -87,8 +87,8 @@ public class SearchMotorcyclesUseCaseTests
 
         List<Motorcycle> mockMotorcycles =
         [
-            new Motorcycle { Identifier = "1", Year = 2020, Plate = "ABC123", Model = "Sport" },
-            new Motorcycle { Identifier = "2", Year = 2021, Plate = "XYZ789", Model = "Touring" }
+            new Motorcycle { Id = "1", Year = 2020, Plate = "ABC123", Model = "Sport" },
+            new Motorcycle { Id = "2", Year = 2021, Plate = "XYZ789", Model = "Touring" }
         ];
 
         _repositoryMock.Setup(r => r.SearchAsync(parameters, It.IsAny<CancellationToken>()))

@@ -21,9 +21,9 @@ public class RepositoryBase<T> : IRepository<T> where T : class, IEntity
         await Context.SaveChangesAsync(cancellationToken);
     }
 
-    public virtual async Task DeleteAsync(long id, CancellationToken cancellationToken = default)
+    public virtual async Task DeleteAsync(string identifier, CancellationToken cancellationToken = default)
     {
-        T? entity = await DbSet.FindAsync([id], cancellationToken: cancellationToken);
+        T? entity = await DbSet.FindAsync([identifier], cancellationToken: cancellationToken);
         if (entity != null)
         {
             DbSet.Remove(entity);
@@ -36,19 +36,13 @@ public class RepositoryBase<T> : IRepository<T> where T : class, IEntity
         return await DbSet.Where(e => e.DeletedAt == null)
                           .AsNoTracking()
                           .ToListAsync(cancellationToken: cancellationToken);
-    }
+    }    
 
-    public virtual async Task<T?> GetByIdAsync(long id, CancellationToken cancellationToken = default)
-    {
-        return await DbSet.Where(e => e.DeletedAt == null)
-                          .FirstOrDefaultAsync(e => e.Id == id, cancellationToken: cancellationToken);
-    }
-
-    public async Task<T?> GetByIdentifierAsync(string identifier, CancellationToken cancellationToken = default)
+    public async Task<T?> GetByIdAsync(string identifier, CancellationToken cancellationToken = default)
     {
         return await DbSet.Where(e => e.DeletedAt == null)
                           .AsNoTracking()
-                          .FirstOrDefaultAsync(e => e.Identifier == identifier, cancellationToken: cancellationToken);
+                          .FirstOrDefaultAsync(e => e.Id == identifier, cancellationToken: cancellationToken);
     }
 
     public virtual async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)

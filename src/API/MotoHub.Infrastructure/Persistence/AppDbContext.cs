@@ -13,6 +13,18 @@ public class AppDbContext : DbContext
 
     public AppDbContext(DbContextOptions options) : base(options) => SavingChanges += OnSavingChanges;
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Motorcycle>()
+                    .HasKey(x => x.Id);
+        
+        modelBuilder.Entity<User>()
+                    .HasKey(x => x.Id);
+
+        modelBuilder.Entity<Rent>()
+                    .HasKey(x => x.Id);
+    }
+
     private void OnSavingChanges(object? sender, SavingChangesEventArgs e) => UpdateAuditableColunmns();
     private void UpdateAuditableColunmns()
     {

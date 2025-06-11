@@ -29,7 +29,7 @@ public class RegisterMotorcycleUseCase(IMotorcycleRepository motorcycleRepositor
             return Result<MotorcycleDto>.Failure("Já existe uma moto com esta placa registrado no sistema", ResultErrorType.BusinessError);
         }
 
-        motorcycle = await motorcycleRepository.GetByIdentifierAsync(dto.Identifier, cancellationToken);
+        motorcycle = await motorcycleRepository.GetByIdAsync(dto.Identifier, cancellationToken);
 
         if (motorcycle is not null)
         {
@@ -38,7 +38,7 @@ public class RegisterMotorcycleUseCase(IMotorcycleRepository motorcycleRepositor
 
         motorcycle = new()
         {
-            Identifier = dto.Identifier,
+            Id = dto.Identifier,
             Plate = dto.Plate,
             Year = dto.Year,
             Model = dto.Model,
@@ -46,14 +46,14 @@ public class RegisterMotorcycleUseCase(IMotorcycleRepository motorcycleRepositor
 
         await motorcycleRepository.AddAsync(motorcycle, cancellationToken);
 
-        await eventPublisher.PublishMotorcycleRegisteredAsync(new MotorcycleRegisteredEvent(motorcycle.Identifier,
+        await eventPublisher.PublishMotorcycleRegisteredAsync(new MotorcycleRegisteredEvent(motorcycle.Id,
                                                                                             motorcycle.Plate,
                                                                                             motorcycle.Year,
                                                                                             motorcycle.Model), cancellationToken);
 
         MotorcycleDto resultDto = new()
         {
-            Identifier = motorcycle.Identifier,
+            Identifier = motorcycle.Id,
             Plate = motorcycle.Plate,
             Year = motorcycle.Year,
             Model = motorcycle.Model

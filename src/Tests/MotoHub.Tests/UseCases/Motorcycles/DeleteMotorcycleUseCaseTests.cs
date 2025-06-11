@@ -23,7 +23,7 @@ public class DeleteMotorcycleUseCaseTests
     {
         string identifier = "123";
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync((Motorcycle?)null);
 
         Result result = await _useCase.ExecuteAsync(identifier);
@@ -43,11 +43,10 @@ public class DeleteMotorcycleUseCaseTests
 
         Motorcycle motorcycle = new()
         {
-            Id = 1,
-            Identifier = identifier
+            Id = identifier
         };
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(motorcycle);
 
         Result result = await _useCase.ExecuteAsync(identifier);

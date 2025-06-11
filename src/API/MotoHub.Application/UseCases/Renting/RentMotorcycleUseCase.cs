@@ -21,7 +21,7 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
         }
         else
         {
-            if (await rentRepository.GetByIdentifierAsync(dto.Identifier, cancellationToken) is not null)
+            if (await rentRepository.GetByIdAsync(dto.Identifier, cancellationToken) is not null)
             {
                 return Result<RentDto>.Failure("Identificador de locação já existe", ResultErrorType.ValidationError);
             }
@@ -44,14 +44,14 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
             return Result<RentDto>.Failure("Plano de aluguel inválido", ResultErrorType.ValidationError);
         }
 
-        Motorcycle? motorcycle = await motorcycleRepository.GetByIdentifierAsync(dto.MotorcycleIdentifier, cancellationToken);
+        Motorcycle? motorcycle = await motorcycleRepository.GetByIdAsync(dto.MotorcycleIdentifier, cancellationToken);
 
         if (motorcycle is null)
         {
             return Result<RentDto>.Failure("Moto não encontrada", ResultErrorType.NotFound);
         }
 
-        User? courier = await userRepository.GetByIdentifierAsync(dto.CourierIdentifier, cancellationToken);
+        User? courier = await userRepository.GetByIdAsync(dto.CourierIdentifier, cancellationToken);
 
         if (courier is null)
         {
@@ -75,7 +75,7 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
 
         Rent rent = new()
         {
-            Identifier = dto.Identifier,
+            Id = dto.Identifier,
             MotorcycleIdentifier = dto.MotorcycleIdentifier,
             CourierIdentifier = dto.CourierIdentifier,
             StartDate = startDate,
@@ -91,7 +91,7 @@ public class RentMotorcycleUseCase(IRentRepository rentRepository,
 
         RentDto resultDto = new()
         {
-            Identifier = rent.Identifier,
+            Identifier = rent.Id,
             MotorcycleIdentifier = rent.MotorcycleIdentifier,
             CourierIdentifier = rent.CourierIdentifier,
             StartDate = rent.StartDate,

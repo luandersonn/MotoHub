@@ -32,7 +32,7 @@ public class UpdateCourierUseCaseTests
             Name = "Novo Nome"
         };
 
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync((User?)null);
 
         Result<CourierDto> result = await _useCase.ExecuteAsync(identifier, dto);
@@ -56,7 +56,7 @@ public class UpdateCourierUseCaseTests
 
         User user = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             Name = "Antigo Nome",
             TaxNumber = "12345678901234",
             BirthDate = DateTime.UtcNow.AddYears(-20),
@@ -65,7 +65,7 @@ public class UpdateCourierUseCaseTests
             DriverLicenseImageIdentifier = "image-123"
         };
 
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(user);
 
         Result<CourierDto> result = await _useCase.ExecuteAsync(identifier, dto);
@@ -90,17 +90,17 @@ public class UpdateCourierUseCaseTests
 
         User user = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             DriverLicenseNumber = "OLD123"
         };
 
         User existingUser = new()
         {
-            Identifier = "456",
+            Id = "456",
             DriverLicenseNumber = "ABC123"
         };
 
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(user);
         _userRepositoryMock.Setup(r => r.GetUserByLicenseNumberAsync(dto.DriverLicenseNumber, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(existingUser);
@@ -129,11 +129,11 @@ public class UpdateCourierUseCaseTests
 
         User user = new()
         {
-            Identifier = userIdentifier,
+            Id = userIdentifier,
             DriverLicenseImageIdentifier = oldImageIdentifier
         };
 
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(userIdentifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(userIdentifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(user);
         _imageStorageMock.Setup(r => r.UploadImageAsBase64Async(dto.DriverLicenseImageBase64, It.IsAny<CancellationToken>()))
                          .ReturnsAsync(newImageIdentifier);
@@ -166,7 +166,7 @@ public class UpdateCourierUseCaseTests
 
         User user = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             Name = "Antigo Nome",
             TaxNumber = "12345678901234",
             BirthDate = DateTime.UtcNow.AddYears(-20),
@@ -175,7 +175,7 @@ public class UpdateCourierUseCaseTests
             DriverLicenseImageIdentifier = "OldImage123"
         };
 
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(user);
         _userRepositoryMock.Setup(r => r.GetUserByLicenseNumberAsync(dto.DriverLicenseNumber, It.IsAny<CancellationToken>()))
                            .ReturnsAsync((User?)null);

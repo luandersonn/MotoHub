@@ -10,7 +10,7 @@ public class UpdateMotorcycleUseCase(IMotorcycleRepository motorcycleRepository)
 {
     public async Task<Result<MotorcycleDto>> ExecuteAsync(string identifier, UpdateMotorcycleDto dto, CancellationToken cancellationToken = default)
     {
-        Motorcycle? existingMotorcycle = await motorcycleRepository.GetByIdentifierAsync(identifier, cancellationToken);
+        Motorcycle? existingMotorcycle = await motorcycleRepository.GetByIdAsync(identifier, cancellationToken);
 
         if (existingMotorcycle is null)
         {
@@ -41,7 +41,7 @@ public class UpdateMotorcycleUseCase(IMotorcycleRepository motorcycleRepository)
 
         MotorcycleDto resultDto = new()
         {
-            Identifier = existingMotorcycle.Identifier,
+            Identifier = existingMotorcycle.Id,
             Plate = existingMotorcycle.Plate,
             Year = existingMotorcycle.Year,
             Model = existingMotorcycle.Model
@@ -53,6 +53,6 @@ public class UpdateMotorcycleUseCase(IMotorcycleRepository motorcycleRepository)
     private async Task<bool> IsPlateInUseAsync(string plate, string identifier, CancellationToken cancellationToken)
     {
         Motorcycle? motorcycleWithSamePlate = await motorcycleRepository.GetByPlateAsync(plate, cancellationToken);
-        return motorcycleWithSamePlate is not null && motorcycleWithSamePlate.Identifier != identifier;
+        return motorcycleWithSamePlate is not null && motorcycleWithSamePlate.Id != identifier;
     }
 }

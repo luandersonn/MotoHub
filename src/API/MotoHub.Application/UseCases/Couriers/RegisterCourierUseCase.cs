@@ -32,7 +32,7 @@ public class RegisterCourierUseCase(IUserRepository userRepository, IImageStorag
             return Result<CourierDto>.Failure("O entregador deve ter pelo menos 18 anos", ResultErrorType.ValidationError);
         }
 
-        User? user = await userRepository.GetByIdentifierAsync(dto.Identifier, cancellationToken);
+        User? user = await userRepository.GetByIdAsync(dto.Identifier, cancellationToken);
 
         if (user is not null)
         {
@@ -57,7 +57,7 @@ public class RegisterCourierUseCase(IUserRepository userRepository, IImageStorag
 
         user = new()
         {
-            Identifier = dto.Identifier,
+            Id = dto.Identifier,
             Name = dto.Name,
             TaxNumber = dto.TaxNumber,
             BirthDate = dto.BirthDate,
@@ -71,7 +71,7 @@ public class RegisterCourierUseCase(IUserRepository userRepository, IImageStorag
 
         CourierDto resultDto = new()
         {
-            Identifier = user.Identifier,
+            Identifier = user.Id,
             Name = user.Name,
             TaxNumber = user.TaxNumber,
             BirthDate = DateOnly.FromDateTime(user.BirthDate),

@@ -31,7 +31,7 @@ public class ReturnMotorcycleUseCaseTests
             ReturnDate = DateTime.UtcNow
         };
 
-        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
+        _rentRepositoryMock.Setup(r => r.GetByIdAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync((Rent?)null);
 
         Result<CompletedRentalDto> result = await _useCase.ExecuteAsync(dto);
@@ -55,11 +55,11 @@ public class ReturnMotorcycleUseCaseTests
 
         Rent rent = new()
         {
-            Identifier = dto.RentIdentifier,
+            Id = dto.RentIdentifier,
             Status = RentStatus.Completed
         };
 
-        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
+        _rentRepositoryMock.Setup(r => r.GetByIdAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(rent);
 
         Result<CompletedRentalDto> result = await _useCase.ExecuteAsync(dto);
@@ -83,11 +83,11 @@ public class ReturnMotorcycleUseCaseTests
 
         Rent rent = new()
         {
-            Identifier = dto.RentIdentifier,
+            Id = dto.RentIdentifier,
             Status = RentStatus.Active,
             StartDate = DateTime.UtcNow
         };
-        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
+        _rentRepositoryMock.Setup(r => r.GetByIdAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(rent);
 
         Result<CompletedRentalDto> result = await _useCase.ExecuteAsync(dto);
@@ -110,7 +110,7 @@ public class ReturnMotorcycleUseCaseTests
 
         Rent rent = new()
         {
-            Identifier = dto.RentIdentifier,
+            Id = dto.RentIdentifier,
             MotorcycleIdentifier = "moto-001",
             CourierIdentifier = "courier-001",
             StartDate = DateTime.UtcNow.AddDays(-7),
@@ -119,7 +119,7 @@ public class ReturnMotorcycleUseCaseTests
             DailyRate = 150.00m
         };
 
-        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
+        _rentRepositoryMock.Setup(r => r.GetByIdAsync(dto.RentIdentifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(rent);
         _pricingCalculatorMock.Setup(p => p.CalculateRentalCost(rent, dto.ReturnDate))
                               .Returns(1050.00m);
@@ -129,7 +129,7 @@ public class ReturnMotorcycleUseCaseTests
         Assert.Multiple(() =>
         {
             Assert.That(result.IsSuccess, Is.True);
-            Assert.That(result.Data?.Identifier, Is.EqualTo(rent.Identifier));
+            Assert.That(result.Data?.Identifier, Is.EqualTo(rent.Id));
             Assert.That(result.Data?.MotorcycleIdentifier, Is.EqualTo(rent.MotorcycleIdentifier));
             Assert.That(result.Data?.CourierIdentifier, Is.EqualTo(rent.CourierIdentifier));
             Assert.That(result.Data?.StartDate, Is.EqualTo(rent.StartDate));

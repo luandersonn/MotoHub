@@ -102,9 +102,9 @@ public class RegisterMotorcycleUseCaseTests
             Identifier = "moto-001"
         };
 
-        Motorcycle existingMotorcycle = new() { Identifier = "moto-001" };
+        Motorcycle existingMotorcycle = new() { Id = "moto-001" };
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(dto.Identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(dto.Identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(existingMotorcycle);
 
         Result<MotorcycleDto> result = await _useCase.ExecuteAsync(dto);
@@ -130,7 +130,7 @@ public class RegisterMotorcycleUseCaseTests
 
         _repositoryMock.Setup(r => r.GetByPlateAsync(dto.Plate, It.IsAny<CancellationToken>()))
                        .ReturnsAsync((Motorcycle?)null);
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(dto.Identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(dto.Identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync((Motorcycle?)null);
 
         Result<MotorcycleDto> result = await _useCase.ExecuteAsync(dto);

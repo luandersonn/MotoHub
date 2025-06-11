@@ -11,7 +11,7 @@ public class ReturnMotorcycleUseCase(IRentRepository rentRepository, IRentPricin
 {
     public async Task<Result<CompletedRentalDto>> ExecuteAsync(ReturnMotorcycleDto dto, CancellationToken cancellationToken = default)
     {
-        Rent? rent = await rentRepository.GetByIdentifierAsync(dto.RentIdentifier, cancellationToken);
+        Rent? rent = await rentRepository.GetByIdAsync(dto.RentIdentifier, cancellationToken);
 
         if (rent is null)
         {
@@ -37,7 +37,7 @@ public class ReturnMotorcycleUseCase(IRentRepository rentRepository, IRentPricin
 
         CompletedRentalDto resultDto = new()
         {
-            Identifier = rent.Identifier,
+            Identifier = rent.Id,
             MotorcycleIdentifier = rent.MotorcycleIdentifier,
             CourierIdentifier = rent.CourierIdentifier,
             StartDate = rent.StartDate,

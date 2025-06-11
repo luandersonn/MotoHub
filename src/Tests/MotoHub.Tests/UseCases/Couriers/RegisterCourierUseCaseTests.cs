@@ -133,9 +133,9 @@ public class RegisterCourierUseCaseTests
             DriverLicenseImageBase64 = "ImagemBase64"
         };
 
-        User existingUser = new() { Identifier = "123" };
+        User existingUser = new() { Id = "123" };
 
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.Identifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(dto.Identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(existingUser);
 
         Result<CourierDto> result = await _useCase.ExecuteAsync(dto);
@@ -162,7 +162,7 @@ public class RegisterCourierUseCaseTests
             DriverLicenseImageBase64 = "ImagemBase64"
         };
 
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.Identifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(dto.Identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync((User?)null);
         _userRepositoryMock.Setup(r => r.GetUserByTaxNumberAsync(dto.TaxNumber, It.IsAny<CancellationToken>()))
                            .ReturnsAsync((User?)null);

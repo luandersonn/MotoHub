@@ -30,7 +30,7 @@ public class UpdateMotorcycleUseCaseTests
             Model = "Sport"
         };
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync((Motorcycle?)null);
 
         Result<MotorcycleDto> result = await _useCase.ExecuteAsync(identifier, dto);
@@ -54,17 +54,17 @@ public class UpdateMotorcycleUseCaseTests
 
         Motorcycle motorcycle = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             Plate = "OLD123"
         };
 
         Motorcycle existingMotorcycle = new()
         {
-            Identifier = "456",
+            Id = "456",
             Plate = "ABC123"
         };
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(motorcycle);
         _repositoryMock.Setup(r => r.GetByPlateAsync(dto.Plate, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(existingMotorcycle);
@@ -90,11 +90,11 @@ public class UpdateMotorcycleUseCaseTests
 
         Motorcycle motorcycle = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             Plate = "OLD123"
         };
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(motorcycle);
         _repositoryMock.Setup(r => r.GetByPlateAsync(dto.Plate, It.IsAny<CancellationToken>()))
                        .ReturnsAsync((Motorcycle?)null);
@@ -121,11 +121,11 @@ public class UpdateMotorcycleUseCaseTests
 
         Motorcycle motorcycle = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             Year = 2000
         };
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(motorcycle);
 
         Result<MotorcycleDto> result = await _useCase.ExecuteAsync(identifier, dto);
@@ -150,11 +150,11 @@ public class UpdateMotorcycleUseCaseTests
 
         Motorcycle motorcycle = new()
         {
-            Identifier = identifier,
+            Id = identifier,
             Model = "Sport"
         };
 
-        _repositoryMock.Setup(r => r.GetByIdentifierAsync(identifier, It.IsAny<CancellationToken>()))
+        _repositoryMock.Setup(r => r.GetByIdAsync(identifier, It.IsAny<CancellationToken>()))
                        .ReturnsAsync(motorcycle);
 
         Result<MotorcycleDto> result = await _useCase.ExecuteAsync(identifier, dto);

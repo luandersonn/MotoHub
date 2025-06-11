@@ -10,7 +10,7 @@ public class GetMotorcycleByIdentifierUseCase(IMotorcycleRepository motorcycleRe
 {
     public async Task<Result<MotorcycleDto>> ExecuteAsync(string identifier, CancellationToken cancellationToken = default)
     {
-        Motorcycle? motorcycle = await motorcycleRepository.GetByIdentifierAsync(identifier, cancellationToken);
+        Motorcycle? motorcycle = await motorcycleRepository.GetByIdAsync(identifier, cancellationToken);
 
         if (motorcycle is null)
         {
@@ -19,7 +19,7 @@ public class GetMotorcycleByIdentifierUseCase(IMotorcycleRepository motorcycleRe
 
         MotorcycleDto dto = new()
         {
-            Identifier = motorcycle.Identifier,
+            Identifier = motorcycle.Id,
             Plate = motorcycle.Plate,
             Year = motorcycle.Year,
             Model = motorcycle.Model

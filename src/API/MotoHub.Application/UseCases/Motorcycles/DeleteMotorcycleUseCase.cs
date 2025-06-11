@@ -9,14 +9,14 @@ public class DeleteMotorcycleUseCase(IMotorcycleRepository motorcycleRepository)
 {
     public async Task<Result> ExecuteAsync(string identifier, CancellationToken cancellationToken = default)
     {
-        Motorcycle? motorcycle = await motorcycleRepository.GetByIdentifierAsync(identifier, cancellationToken);
+        Motorcycle? motorcycle = await motorcycleRepository.GetByIdAsync(identifier, cancellationToken);
 
         if (motorcycle is null)
         {
             return Result.Failure("Moto não encontrada", ResultErrorType.NotFound);
         }
 
-        await motorcycleRepository.DeleteAsync(motorcycle.Id!, cancellationToken);
+        await motorcycleRepository.DeleteAsync(motorcycle.Id, cancellationToken);
 
         return Result.Success();
     }

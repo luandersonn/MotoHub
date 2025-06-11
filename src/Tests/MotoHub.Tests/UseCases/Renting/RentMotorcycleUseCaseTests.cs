@@ -42,7 +42,7 @@ public class RentMotorcycleUseCaseTests
             Plan = 1
         };
 
-        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.Identifier, It.IsAny<CancellationToken>()))
+        _rentRepositoryMock.Setup(r => r.GetByIdAsync(dto.Identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(new Rent());
 
         Result<RentDto> result = await _useCase.ExecuteAsync(dto);
@@ -146,10 +146,10 @@ public class RentMotorcycleUseCaseTests
                                 PlanNumber = 0
                             });
 
-        _motorcycleRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.MotorcycleIdentifier, It.IsAny<CancellationToken>()))
+        _motorcycleRepositoryMock.Setup(r => r.GetByIdAsync(dto.MotorcycleIdentifier, It.IsAny<CancellationToken>()))
                                  .ReturnsAsync(new Motorcycle());
 
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.CourierIdentifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(dto.CourierIdentifier, It.IsAny<CancellationToken>()))
                             .ReturnsAsync(new User { DriverLicenseType = DriverLicenseType.A });
 
         Result<RentDto> result = await _useCase.ExecuteAsync(dto);
@@ -182,13 +182,13 @@ public class RentMotorcycleUseCaseTests
             LateReturnDailyFee = 20.00m
         };
 
-        _rentRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.Identifier, It.IsAny<CancellationToken>()))
+        _rentRepositoryMock.Setup(r => r.GetByIdAsync(dto.Identifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync((Rent?)null);
         _rentRepositoryMock.Setup(r => r.GetActiveRentByMotorcycleAsync(dto.MotorcycleIdentifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync((Rent?)null);
-        _motorcycleRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.MotorcycleIdentifier, It.IsAny<CancellationToken>()))
+        _motorcycleRepositoryMock.Setup(r => r.GetByIdAsync(dto.MotorcycleIdentifier, It.IsAny<CancellationToken>()))
                                   .ReturnsAsync(new Motorcycle());
-        _userRepositoryMock.Setup(r => r.GetByIdentifierAsync(dto.CourierIdentifier, It.IsAny<CancellationToken>()))
+        _userRepositoryMock.Setup(r => r.GetByIdAsync(dto.CourierIdentifier, It.IsAny<CancellationToken>()))
                            .ReturnsAsync(new User { DriverLicenseType = DriverLicenseType.A });
         _rentPlanCatalogMock.Setup(r => r.FindPlanByNumber(dto.Plan))
                             .Returns(plan);

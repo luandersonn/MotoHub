@@ -22,7 +22,7 @@ public class MotorcycleRepository(AppDbContext context) : RepositoryBase<Motorcy
 
         if (!string.IsNullOrWhiteSpace(queryParameters.Identifier))
         {
-            query = query.Where(m => m.Identifier.Contains(queryParameters.Identifier));
+            query = query.Where(m => m.Id.Contains(queryParameters.Identifier));
         }
 
         if (!string.IsNullOrWhiteSpace(queryParameters.Model))

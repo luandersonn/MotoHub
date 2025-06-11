@@ -11,7 +11,7 @@ public class UpdateCourierUseCase(IUserRepository userRepository, IImageStorage 
 {
     public async Task<Result<CourierDto>> ExecuteAsync(string identifier, UpdateCourierDto dto, CancellationToken cancellationToken = default)
     {
-        User? user = await userRepository.GetByIdentifierAsync(identifier, cancellationToken);
+        User? user = await userRepository.GetByIdAsync(identifier, cancellationToken);
 
         if (user is null)
         {
@@ -60,7 +60,7 @@ public class UpdateCourierUseCase(IUserRepository userRepository, IImageStorage 
 
         CourierDto resultDto = new()
         {
-            Identifier = user.Identifier,
+            Identifier = user.Id,
             Name = user.Name,
             TaxNumber = user.TaxNumber,
             BirthDate = DateOnly.FromDateTime(user.BirthDate),
@@ -75,6 +75,6 @@ public class UpdateCourierUseCase(IUserRepository userRepository, IImageStorage 
     private async Task<bool> IsDriverLicenseNumberInUseAsync(string licenseNumber, string identifier, CancellationToken cancellationToken)
     {
         User? userWithSameDriverLicense = await userRepository.GetUserByLicenseNumberAsync(licenseNumber, cancellationToken);
-        return userWithSameDriverLicense is not null && userWithSameDriverLicense.Identifier != identifier;
+        return userWithSameDriverLicense is not null && userWithSameDriverLicense.Id != identifier;
     }
 }
