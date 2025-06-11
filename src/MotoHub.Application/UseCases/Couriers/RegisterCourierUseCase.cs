@@ -1,4 +1,5 @@
 ﻿using MotoHub.Application.DTOs;
+using MotoHub.Application.Interfaces;
 using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Application.Interfaces.UseCases.Couriers;
 using MotoHub.Domain.Common;
@@ -7,7 +8,7 @@ using MotoHub.Domain.ValueObjects;
 
 namespace MotoHub.Application.UseCases.Couriers;
 
-public class RegisterCourierUseCase(IUserRepository userRepository, IImageRepository imageStorage) : IRegisterCourierUseCase
+public class RegisterCourierUseCase(IUserRepository userRepository, IImageStorage imageStorage) : IRegisterCourierUseCase
 {
     public async Task<Result<CourierDto>> ExecuteAsync(RegisterCourierDto dto, CancellationToken cancellationToken = default)
     {

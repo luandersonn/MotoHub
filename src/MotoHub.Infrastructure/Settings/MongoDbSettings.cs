@@ -1,4 +1,4 @@
-﻿namespace MotoHub.Infrastructure.Persistence;
+﻿namespace MotoHub.Infrastructure.Settings;
 
 public class MongoDbSettings
 {

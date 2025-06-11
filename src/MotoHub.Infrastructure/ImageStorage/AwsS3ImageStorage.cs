@@ -2,12 +2,12 @@
 using Amazon.S3.Model;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MotoHub.Application.Interfaces.Repositories;
+using MotoHub.Application.Interfaces;
 using MotoHub.Infrastructure.Settings;
 
-namespace MotoHub.Infrastructure.Repositories;
+namespace MotoHub.Infrastructure.ImageStorage;
 
-public class AwsS3ImageRepository(IAmazonS3 s3Client, IOptions<AwsS3Settings> options, ILogger<AwsS3ImageRepository> logger) : IImageRepository
+public class AwsS3ImageStorage(IAmazonS3 s3Client, IOptions<AwsS3Settings> options, ILogger<AwsS3ImageStorage> logger) : IImageStorage
 {
     private readonly string _bucketName = options.Value.BucketName ?? throw new ArgumentNullException("A configuração do bucket S3 é obrigatória");
 

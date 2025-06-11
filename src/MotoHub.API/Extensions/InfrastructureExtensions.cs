@@ -5,8 +5,10 @@ using Amazon.SQS;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MotoHub.Application.Interfaces;
 using MotoHub.Application.Interfaces.Messaging;
 using MotoHub.Application.Interfaces.Repositories;
+using MotoHub.Infrastructure.ImageStorage;
 using MotoHub.Infrastructure.Messaging;
 using MotoHub.Infrastructure.Persistence;
 using MotoHub.Infrastructure.Repositories;
@@ -40,26 +42,6 @@ public static class InfrastructureExtensions
         return services;
     }
 
-    private static IServiceCollection UseMongoAsImageStorage(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
-
-        services.AddSingleton(sp =>
-        {
-            MongoDbSettings mongoDbSettings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-
-            MongoClientSettings clientSettings = MongoClientSettings.FromConnectionString(mongoDbSettings.ConnectionString);
-
-            MongoClient mongoClient = new(clientSettings);
-
-            return mongoClient.GetDatabase(mongoDbSettings.Database);
-        });
-
-        services.AddScoped<IImageRepository, MongoDbImageRepository>();
-
-        return services;
-    }
-
     private static IServiceCollection UseSQSAsMessageQueue(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<AwsSQSSettings>(configuration.GetSection("AwsSQSSettings"));
@@ -83,6 +65,28 @@ public static class InfrastructureExtensions
         return services;
     }
 
+    private static IServiceCollection UseMongoAsImageStorage(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
+
+        services.AddSingleton(sp =>
+        {
+            MongoDbSettings mongoDbSettings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+
+            MongoClientSettings clientSettings = MongoClientSettings.FromConnectionString(mongoDbSettings.ConnectionString);
+
+            MongoClient mongoClient = new(clientSettings);
+
+            return mongoClient.GetDatabase(mongoDbSettings.Database);
+        });
+
+        services.AddScoped<IImageStorage, MongoDbImageStorage>();
+
+        return services;
+    }
+
+ 
+
     private static IServiceCollection UseS3AsImageStorage(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<AwsS3Settings>(configuration.GetSection("AwsS3Settings"));
@@ -101,7 +105,7 @@ public static class InfrastructureExtensions
             return new AmazonS3Client(credentials, amazonS3Config);
         });
 
-        services.AddScoped<IImageRepository, AwsS3ImageRepository>();
+        services.AddScoped<IImageStorage, AwsS3ImageStorage>();
 
         return services;
     }

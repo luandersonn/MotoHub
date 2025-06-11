@@ -1,4 +1,5 @@
 ﻿using MotoHub.Application.DTOs;
+using MotoHub.Application.Interfaces;
 using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Application.Interfaces.UseCases.Couriers;
 using MotoHub.Domain.Common;
@@ -6,7 +7,7 @@ using MotoHub.Domain.Entities;
 
 namespace MotoHub.Application.UseCases.Couriers;
 
-public class UpdateCourierUseCase(IUserRepository userRepository, IImageRepository imageStorage) : IUpdateCourierUseCase
+public class UpdateCourierUseCase(IUserRepository userRepository, IImageStorage imageStorage) : IUpdateCourierUseCase
 {
     public async Task<Result<CourierDto>> ExecuteAsync(string identifier, UpdateCourierDto dto, CancellationToken cancellationToken = default)
     {

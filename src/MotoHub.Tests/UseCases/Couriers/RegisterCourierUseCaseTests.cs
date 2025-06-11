@@ -1,4 +1,5 @@
 using MotoHub.Application.DTOs;
+using MotoHub.Application.Interfaces;
 using MotoHub.Application.Interfaces.Repositories;
 using MotoHub.Application.UseCases.Couriers;
 using MotoHub.Domain.Common;
@@ -11,14 +12,14 @@ namespace MotoHub.Tests.UseCases.Couriers;
 public class RegisterCourierUseCaseTests
 {
     private Mock<IUserRepository> _userRepositoryMock;
-    private Mock<IImageRepository> _imageStorageMock;
+    private Mock<IImageStorage> _imageStorageMock;
     private RegisterCourierUseCase _useCase;
 
     [SetUp]
     public void Setup()
     {
         _userRepositoryMock = new Mock<IUserRepository>();
-        _imageStorageMock = new Mock<IImageRepository>();
+        _imageStorageMock = new Mock<IImageStorage>();
         _useCase = new RegisterCourierUseCase(_userRepositoryMock.Object, _imageStorageMock.Object);
     }
 
