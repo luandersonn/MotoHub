@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Domain", "API\MotoH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Infrastructure", "API\MotoHub.Infrastructure\MotoHub.Infrastructure.csproj", "{8DF509D9-8CE5-2048-0624-1D1B690C824B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotoHub.Notifier", "Microservices\MotoHub.Notifier\MotoHub.Notifier.csproj", "{C6692526-235A-75DF-62D1-5F90DD65C34B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{8DF509D9-8CE5-2048-0624-1D1B690C824B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DF509D9-8CE5-2048-0624-1D1B690C824B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DF509D9-8CE5-2048-0624-1D1B690C824B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6692526-235A-75DF-62D1-5F90DD65C34B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6692526-235A-75DF-62D1-5F90DD65C34B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6692526-235A-75DF-62D1-5F90DD65C34B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6692526-235A-75DF-62D1-5F90DD65C34B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{24A08273-4B24-CA5F-30BB-2EA6BF810E46} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{953B548A-C735-CB10-9237-57FBCF7BB560} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{8DF509D9-8CE5-2048-0624-1D1B690C824B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C6692526-235A-75DF-62D1-5F90DD65C34B} = {7CA8911D-2743-4160-8BBC-DFBAD3099D93}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A787D6A8-F3D3-4A18-A486-E0A48D87A7C3}
