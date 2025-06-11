@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MotoHub.Application.Events;
 using MotoHub.Infrastructure.Messaging;
+using MotoHub.Infrastructure.Settings;
 
 namespace MotoHub.Tests.Infrastructure;
 

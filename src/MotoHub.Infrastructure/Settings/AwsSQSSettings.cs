@@ -1,4 +1,4 @@
-﻿namespace MotoHub.Infrastructure.Messaging;
+﻿namespace MotoHub.Infrastructure.Settings;
 
 public class AwsSQSSettings
 {

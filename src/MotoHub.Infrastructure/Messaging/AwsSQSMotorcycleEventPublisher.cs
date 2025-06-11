@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MotoHub.Application.Events;
 using MotoHub.Application.Interfaces.Messaging;
+using MotoHub.Infrastructure.Settings;
 using System.Text.Json;
 
 namespace MotoHub.Infrastructure.Messaging;
